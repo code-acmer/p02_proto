@@ -1,0 +1,116 @@
+package pb_11;
+//聊天协议
+
+message pbChat{
+        optional int32     id_n        = 1;
+        optional int32     type        = 2;
+        optional int32     id          = 3;
+        optional int64     recv_id     = 4; //接收方ID
+        optional int64     send_id     = 5; //发送方ID
+        optional string    nickname    = 6;
+        optional int32     lv          = 7;
+        optional int32     career      = 8;
+        optional int32     vip         = 9;
+	optional string    msg         = 10;
+        optional int32     timestamp   = 11;
+    optional int32     league_id   = 12;
+    optional int32     gold_num    = 13;
+}
+
+message pbId32{
+        optional int32     id          = 1;
+}
+
+message pbChatList{
+        repeated pbChat update_list = 1;
+}
+
+message PbPrivate{
+        repeated pbChat send_list = 1;
+        repeated pbChat recv_list = 2;
+}
+
+message pbNewMsg{
+        repeated int32  send_list = 1;
+}
+
+message pbFeedBackMsg{
+        optional string     title         = 1;
+        optional string     content       = 2;
+}
+//============世界聊天=========
+//协议号：11010
+// c >> s:
+//       message pbChat{
+//               msg
+//               }
+// s >> c:
+//       message pbChat
+
+//============请求世界聊天内容=========
+//协议号：11012
+// c >> s:
+//       message PbId32{
+//               id
+//               }
+// s >> c:
+//       message pbChatList
+
+//============私聊===================
+// 协议号：11013
+// c >> s:
+//     message pbChat{
+//            recv_id
+//            msg
+//          }
+// s >> c:
+//     null
+
+//============私聊新消息================
+// 协议号：11014
+// c >> s:
+//     null
+// s >> c:
+//     pbNewMsg
+
+//============获取私聊信息===================
+// 协议号：11015
+// c >> s:
+//     message pbChat{
+//            recv_id                    //好友id
+//          }
+// s >> c:
+//     pbprivate
+
+//============客户反馈文本===================
+// 协议号：11016
+// c >> s:
+//     message pbFeedBackMsg{
+//            title
+//            content
+//          }
+// s >> c:
+//     pbFeedBackMsg
+
+//============工会聊天================
+// 协议号：11020
+// c >> s:
+//     pbchat
+// s >> c:
+//     null
+
+//============请求工会聊天================
+// 协议号：11021
+// c >> s:
+//     pbid32
+// s >> c:
+//     pbchatlist
+
+//============系统公告=================
+// 协议号：11080
+// c >> s:
+//     null
+// s >> c:
+//     pbchatlist
+
+

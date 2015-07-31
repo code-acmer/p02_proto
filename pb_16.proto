@@ -1,0 +1,39 @@
+package pb_16;
+import "pb_common.proto";
+
+
+message pbFashion{
+    optional int32 id         = 1;
+    optional int32 nid        = 2;
+    optional int32 base_id    = 3;
+    optional int32 container  = 6;
+}
+
+message pbFashionList{
+    optional int32 current_id        = 1;
+    optional int32 change_id         = 2;
+    repeated pbFashion fashion_list  = 3;
+}
+
+
+
+// ==== 获取玩家时装背包 ====
+// 协议号：16001
+// c >> s:
+//     无
+// s >> c:
+// pbFashionList{
+//      fashion_list
+// } 
+
+
+// ==== 获取玩家时装背包 ====
+// 协议号：16002
+// c >> s:
+//     pbFashionList{
+//         current_id,
+//         change_id   
+//     }
+// s >> c:
+//      null
+// 在返回16001 

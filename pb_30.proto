@@ -1,0 +1,45 @@
+package pb_30;
+import "pb_common.proto";
+
+message pbTaskList {
+        repeated pbTask update = 1;     // 任务更新
+        repeated pbTask delete = 2;     // 完成列表
+}
+
+message pbTask {
+        optional int32 id          = 1;          // 任务id
+        optional int32 task_id     = 2;          // 配置表id
+        optional int64 player_id   = 3;          // 玩家id
+        optional int32 type        = 4;          // 任务类型
+        optional int32 schedule    = 5;          // 任务进度
+        optional int32 state       = 6;          // 任务状态(1是完成，0是未完成)
+        optional int32 last_op     = 7;          // 上次操作时间
+}
+
+// ==== 任务列表 ====
+// 协议号：30000
+// c >> s:
+//     null
+// s >> c:
+//     pbTaskList
+
+// ==== 放弃任务 ====
+// 协议号：30001
+// c >> s:
+//     pbid32
+// s >> c:
+//     pbTaskList
+
+// ==== 任务变更 ====
+// 协议号：30004
+// c >> s:
+//     null
+// s >> c:
+//     pbTaskList
+
+// ==== 任务领奖 ====
+// 协议号：30005
+// c >> s:
+//     pbid32
+// s >> c:
+//     null

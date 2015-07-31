@@ -1,0 +1,55 @@
+package pb_34;
+import "pb_common.proto";
+
+message pbTwistEgg{  
+    optional int32            type           = 1;
+    optional int32            count          = 2;
+    optional int32            add_att_flag   = 3;
+    repeated int32            goods_id       = 4;
+}
+
+
+message pbActivity{  
+    optional int32            id                = 1;
+    optional string           activity_desc     = 2;
+    optional int32            category          = 3;
+    optional int32            start_time        = 4;
+    optional int32            end_time          = 5;
+    optional int32            server_now        = 6;
+    optional int32            type              = 7;
+    optional string           notice            = 8;
+    optional int32            notice_start_time = 9;
+    optional int32            notice_end_time   = 10;
+    optional int32            interval          = 11;
+}
+
+message pbActivityList{  
+    repeated pbActivity       activity       = 1;
+    optional int32            mails_count    = 2;  
+}
+
+message pbTwistEggList{  
+    repeated pbTwistEgg       twist_egg       = 1; 
+}
+
+
+// 协议号：34001 
+// 活动列表
+// c >> s
+// s << c
+//       pbActivityList{
+//           activity                 活动列表
+//           mails_count              未读邮件数量
+//       }
+
+// 协议号：34002
+// 扭蛋
+// c >> s
+//       message pbTwistEgg{
+//           type                      // 1=友情扭蛋，2=元宝扭蛋
+//           count                     // 扭蛋次数
+//       }
+// s << c
+//       message pbTwistEggList{
+//           twist_egg                  斗魂id列表
+//       }

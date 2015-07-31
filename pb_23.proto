@@ -1,0 +1,187 @@
+
+package pb_23;
+import "pb_common.proto";
+// ==== 竞技信息 ====
+message pbArenaInfo {
+        optional int32 challenge_times = 1;         // 已挑战次数
+        optional int32 rest_challenge_times = 2;    // 可挑战次数
+        optional int32 challenge_timestamp = 3;     // 挑战时间戳
+        optional int32 rank = 4;                    // 排名信息
+        optional int32 win_times = 5;               // 胜场
+        optional int32 fail_times = 6;              // 败场
+        optional int32 robot = 7;                   // 是否是机器人
+        optional int64 player_id = 8;               // 玩家的 id
+        optional int32 level = 9;                   // 玩家等级
+        optional string nickname = 10;              // 玩家名字
+        optional int32 career = 11;                 // 玩家职业
+        optional int32 battle_ability = 12;         // 玩家战力
+        repeated int64 enemy = 13;                  //仇人
+        optional int32 sn = 14;                     //服务器号
+        optional int32 buy_times = 15;              //已购买的次数
+        optional int32 score = 16;                  //分数
+        optional int32 robot_id = 17;               //机器人id
+}
+
+// ==== 竞技信息列表 ====
+message pbArenaInfoList {
+        repeated pbArenaInfo arena_player_list = 1; //推荐列表
+}
+
+// ==== 战报信息 ====
+message pbArenaBattleReport {
+        optional int32 id = 1;                       // report_id
+        optional int32 type = 2;                     // 1 - 挑战 2 - 被挑战
+        optional int32 result = 3;                   // 战斗结果 0 失败 1 - 胜利 2 - 平局
+        optional int32 timestamp = 4;                // 挑战时间戳
+        optional int32 player_id = 5;                // 玩家 id
+        optional string nickname = 6;                 // 玩家 名字
+        optional int32 deffender_id = 7;             // 防御方 id
+        optional string deffender_name = 8;          // 防御方名字
+        optional int32 rank_change_type = 9;         // 排名变化 1 - 上升 2 - 下降 0 - 不变
+        optional int32 attack_rank = 10;             // 攻击方排名
+        optional int32 deffender_rank = 11;          // 防御方排名
+}
+
+// ==== 战报信息列表 ====
+message pbArenaBattleReportList {
+        repeated pbArenaBattleReport report_list = 1;
+}
+
+message pbArenaChallenge{
+        optional int64 id      = 1;    //挑战 小岛id
+        optional int32 result  = 2;    //战斗结果
+        optional int32 robot   = 3;    //是否是机器人
+}
+
+message pbCrossHistory{
+        optional int32 rank = 1;  //排名
+        optional int32 round = 2; //第几轮
+        optional int32 timestamp = 3; //时间
+}
+
+message pbCrossHistoryList{
+        repeated pbCrossHistory list = 1;
+}
+
+message pbCrossIsland{
+        optional int32      id                 = 1;     // 编号 1 - 15
+        optional int64      occupy_id          = 2;     // 占领者 id or robot_id
+        optional string     occupy_name        = 3;     // 占领者 名称
+        optional int32      occupy_career      = 4;     // 占领者 职业
+        optional int32      occupy_lv          = 5;     // 占领者 等级
+        optional int32      occupy_sn          = 6;     // 占领者 服务器
+        optional int32      occupy_ability     = 7;     // 占领者 战力
+        optional int32      occupy_robot       = 8;     // 占领者 是否是机器人
+        optional int32      occupy_time        = 9;     // 占领时间
+        optional int32      calc_timestamp     = 10;    // 资源结算时间 > 0才需要进行结算
+        optional int32      is_enemy           = 11;    // 1为宿敌，0为非宿敌
+}
+
+message pbCrossRecord{
+        optional int32      timestamp   = 1;           // 事件时间
+        optional int64      atk_id      = 2;           // 进攻方id
+        optional string     atk_name    = 3;           // 进攻方名
+        optional int64      def_id      = 4;           // 防御方id
+        optional string     def_name    = 5;           // 防御方名
+        optional int32      result      = 6;           // 结果
+}
+message pbCrossFighter{
+        optional int32          times          = 1;   //%% 剩余攻击次数
+        optional int32          buy_times      = 2;   //%% 购买的次数
+        repeated pbCrossIsland  islands        = 3;   //%% 岛内情况
+        repeated pbCrossRecord  records        = 4;   //%% 攻击与被攻击记录
+}
+
+
+// 协议号：23000
+// 获取异步竞技场信息
+// c >> s
+//       null
+// s << c
+//       pbarenainfo
+
+// 协议号：23001
+// 获取异步竞技场推荐信息
+// c >> s
+//       null
+// s << c
+//       pbarenainfolist
+
+// 协议号：23002
+// 异步竞技场挑战
+// c >> s
+//       pbArenaChallenge{
+//        optional int64 id = 1;   //挑战id
+//        optional int32 result =2; //战斗结果
+//        }
+// s << c
+//       23000
+
+// 协议号：23003
+// 获取竞技场的战报信息
+// c >> s
+//      #pbid32{id = 1};
+// s << c
+//       pbArenaBattleReportList
+
+// 协议号：23005
+// 获取竞技场的排行榜信息
+// c >> s
+//      null
+// s << c
+//       pbArenaInfoList
+
+// 协议号：23006
+// 异步pvp购买挑战次数
+// c >> s
+//      null
+// s << c
+//       null
+
+//----------------以下是10人PVP--------------
+// 协议号：23500
+// 获取自己小岛相关情况，如果有资源收益直接发放
+// c >> s
+//       null
+// s << c
+//       pbCrossFighter
+
+// 协议号：23501
+// 挑战
+// c >> s
+//       pbArenaChallenge{
+//        optional int64 id = 1;   //挑战island id
+//        }
+// s << c
+//       pbCrossIsland{
+//                      id         // 挑战的小岛
+//                      occupy_id  // 对手的id OR 机器人id
+//                      occupy_robot //  机器人标识 1为机器人
+//}
+
+// 协议号：23502
+// 挑战
+// c >> s
+//       pbArenaChallenge{
+//        optional int64 id = 1;    //挑战island_id  小岛id
+//        optional int32 result =2; //战斗结果
+//        }
+// s << c
+//       null
+
+// 协议号：23504
+// 购买跨服竞技场次数
+// c >> s
+//      null
+// s << c
+//       pbCrossFighter{
+//                      times       当前可用次数
+//                      buy_times   购买的次数
+//      }
+
+// 协议号：23505
+// 历史记录
+// c >> s
+//      null
+// s << c
+//       pbCrossHistoryList

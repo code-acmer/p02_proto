@@ -1,0 +1,28 @@
+package pb_32;
+
+message pbPlayerAchieve {
+    optional int64 player_id = 1; //玩家ID
+    optional int32 achieve_id = 2; // 成就ID
+    optional int32 type = 3; // 成就类型
+    optional int32 finish_flag = 4; // 1表示完成，0表示没有完成
+    optional int32 goods_id = 5;     // 
+    optional int32 num = 6;     // 
+    optional int32 task_id = 7; // 任务完成ID
+}
+
+message pbPlayerAchieveList {
+    repeated pbPlayerAchieve pa_list = 1;
+}
+//======当前进行的成就查询=========
+// 协议号：32001
+// c >> s:
+//        null
+// s >> c:
+//        pbPlayerAchieveList
+
+//======领取成就奖励=========
+// 协议号：32002
+// c >> s:
+//        pbPlayerAchieve
+// s >> c:
+//        pbPlayerAchieveList

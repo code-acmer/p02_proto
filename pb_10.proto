@@ -1,0 +1,150 @@
+package pb_10;
+import "pb_common.proto";
+
+// ==== 角色登录 ====
+// 协议号：10000
+// c >> s:
+message pbAccount {
+        optional int64  acc_id = 1;                  // 账号id，必要字段
+        optional string acc_name = 2;                // 账号名
+        optional int32  timestamp = 3;               // 时间戳
+        optional int32  server_id = 4;               // 服务器id
+        optional string login_ticket = 5;            // 登录口令
+        optional string suid = 6;                    // 登录唯一id，平台返回
+        optional string platform = 7;                // 登录平台
+        optional string device_id = 8;               // 设备标识
+}
+
+// 协议号:10000
+// s >> c:    
+message pbUserLoginInfo {
+    optional int64  user_id = 1;                 // 角色id，必要字段
+    optional string nickname = 2;                // 角色名
+    optional int32  level = 3;                   // 等级
+    optional int32  camp = 4;                    // 阵营
+    optional int32  career = 5;                  // 职业
+    optional int32  sex = 6;                     // 性别
+    optional int32  server_id = 7;               // 服务器id
+    optional int32  status = 8;                  // 角色状态（0正常、1禁止）
+    optional string acc_id = 9;                  // 账号id
+    optional string acc_name = 10;               // 账号名
+    repeated pbUserLoginFashionInfo list = 11;   // 身上的时装列表
+}
+
+message pbUserLoginFashionInfo{
+    optional int32 fashion_base_id = 1; // 时装BaseId
+    optional int32 sub_type = 2; // 时装子类型
+}
+
+message pbAccountLogin {
+    optional int32 result = 1;                   // 登录结果（0失败、1成功、2失败 - 离线时间还没超过5小时（防沉迷））
+    optional int32 total_online = 2;             // 当前在线时长
+    repeated pbUserLoginInfo user_info = 3;      // 登录角色信息
+    optional string acc_id = 4;                  // 帐号id
+    optional int32 session = 5;                  // 登录口令       
+}
+
+message pbCreateARole{                           //10010创建一个帐号并分配一个角色
+	optional int32 server_id = 1;
+	optional int64 acc_id = 2;
+}
+
+message pbServerStatus{
+	optional int32 index = 1;
+	optional string ip   = 2;
+	optional int32  port = 3;
+	optional int32  state = 4;
+	optional int32  num   = 5;
+}
+
+message pbRc4{
+    optional    bytes    p   = 1;
+    optional    bytes    g   = 2;
+    optional    bytes    pub = 3;
+}
+
+// ==== 选择角色 ====
+// 协议号：10000
+// c >> s:
+//     pbAccount
+// s >> c:
+//     pbaccountlogin 
+
+// ==== 角色登陆 ====
+// 协议号：10001
+// c >> s:
+//     无
+// s >> c:
+//     无
+
+// ==== 获取角色列表 ====
+// 协议号：10002
+// c >> s:
+//     无
+// s >> c:
+//     pbAccountLogin
+
+// ==== 创建角色 ====
+// 协议号：10003
+// c >> s:
+//     pbUserLoginInfo
+// s >> c:
+//     pbuserlogininfo
+
+message pbUserResult {
+    optional int32 result = 1;                   // 创建结果：
+                                                 //（0失败、1创建成功、2未知错误、3角色名称已经被使用、4非法字符
+                                                 // 5角色名称长度为1~5个汉字、6用户已经创建角色、7账号角色个数已经达到3个、
+                                                 // 8角色名中含有敏感词）
+    optional int64 user_id = 2;
+}
+  
+
+// ==== 选择角色 ====
+// 协议号：10004
+// c >> s:
+//     pbUserLoginInfo
+// s >> c:
+//     pbUserResult                              //  选择结果：
+                                                 // （0失败、1成功 - 加载场景（成年人）、2成功 - 第一次登陆游戏
+                                                 //  3成功 - 未成年、4成功 - 但未填写身份证信息）
+// ==== 删除角色 ====
+// 协议号：10005
+// c >> s:
+//     pbUserLoginInfo
+// s >> c:
+//     pbUserResult                              // 删除结果：（1成功、0失败）
+
+// ==== 心跳协议 ====
+// 协议号：9006
+// c >> s:
+//     无
+// s >> c:
+//     无
+
+// ==== 强制下线 ====
+// 协议号：10007
+// c >> s:
+// s >> c:
+//     pbUserResult
+// 0 => 服务器端维护
+// 1 => 账号在别处登录
+// 2 => 被踢下线
+// 3 => 被封角色
+// 4 => 被封账号
+// 5 => 在线时间超过3小时（防沉迷）
+// 6 => 9级以下，30分钟都不移动, 则做踢出
+// 7 => 涉嫌使用外挂
+
+// ==== 强制下线 ====
+// 协议号：10030
+// c >> s:
+// s >> c:
+//     pbId32
+
+
+// 10100
+// c > s:
+//       pbrc4;{p,g,pub-client}
+// s > c:
+//       pbrc4{pub-server}

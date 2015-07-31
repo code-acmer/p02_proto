@@ -1,0 +1,47 @@
+package pb_44;
+import "pb_common.proto";
+
+message pbCampPos{
+        optional         int32        pos        = 1;
+        optional         int64        goods_uid  = 2;
+}
+
+message pbCamp{
+    optional         int32               id  = 1;
+    repeated         pbCampPos     pos_list  = 2;
+    optional         int32         update_timestamp = 3;
+}
+message pbPlayerCamp{
+    optional         int64       player_id   = 1;
+    optional         int32       using_camp  = 2;
+    repeated         pbCamp        camp_list   = 3;
+    optional         int32         update_timestamp = 4;
+}
+
+// 获取玩家所有阵法信息
+// 协议号: 44000
+// c >> s:
+//        null
+// s >> c:
+//        pbPlayerCamp
+
+
+// 保存玩家阵法
+// 协议号：44100
+// c >> s:
+//       pbCamp
+// s >> c:
+//       pbCamp
+//       OR 通用错误码
+//       15101
+
+// 切换阵法
+// 协议号：44101
+// c >> s:
+//      pbId32{
+//            id    // 1- 6 选中的阵法
+//      }
+// s >> c:
+//      pbPlayerCamp
+//      OR 通用错误码
+//      15001

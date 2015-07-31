@@ -1,0 +1,44 @@
+// 一些通用的数据
+package pb_common;
+
+message pbResult {
+        optional int32 result = 1;                      // 返回结果
+}
+
+message pbId32 {
+        optional int32 id = 1;                          // 32位的id信息
+}
+
+message pbId32R {
+        repeated int32 id = 1;                          // 32位的[id1,id2,...]信息
+}
+
+message pbId64 {
+        optional int64 id = 1;                          // 64位的id信息
+}
+
+message pbId64R {
+        repeated int64 ids = 1;                         // 64位的id信息集合
+}
+
+message pbIdString {
+        optional string id = 1;                         // 字符串ID
+}
+
+message pbRewardItem{
+        optional     int32          id			= 1;     //	%%奖励编号
+        // optional     int32          type 		= 2;     //	%%奖励种类，1为元宝，2为铜钱，3为普通物品
+        optional     int32          num         = 3;     // %%奖励数目
+        optional     int32          goods_id	= 4;     // %%奖励的物品id
+}
+
+message pbCombatReward{
+        optional   int32            exp                 = 1;              // %% 经验奖励
+        repeated   pbRewardItem     mon_drop_list       = 2;              // %% 都是reward_item记录,在define_dungeon.hrl中定义
+        repeated   pbRewardItem     dungeon_reward_list = 3;              // %% 副本奖励列表
+        optional   int64            unique_id           = 4;              // %% 用于前端跟后端领取奖励的确认
+        optional   int32            seal                = 5;              // 封印值 
+        optional   int32            evaluate            = 6;              // FB评价
+        optional   int32            point               = 7;              // FB评分
+        repeated   int64            partners            = 8;              // 伙伴列表
+}

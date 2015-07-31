@@ -1,0 +1,587 @@
+package pb_15;
+import "pb_common.proto";
+
+message pbGoodsList{
+        repeated pb_common.pbGoods     goods_list     = 1;
+        optional int32 update_timestamp = 2;
+}
+
+message pbEquipMove{
+        optional int32        id            = 1;
+        optional int32        pos           = 2;
+}
+
+message pbGoodsChanged{
+        optional pbGoodsList  added_list    = 1;
+        optional pbGoodsList  deleted_list  = 2;
+        optional pbGoodsList  updated_list  = 3;
+        optional int32 update_timestamp = 4;
+}
+
+message pbEquipStrengthen{
+        optional int32        id            = 1;
+        optional int32        num           = 2;
+}
+
+message pbEquipAddStar{
+        optional int32        id            = 1;
+        optional int32        num           = 2;
+}
+
+message pbSmriti{
+        optional int32        id            = 1;
+        optional int32        tid           = 2;
+}
+
+message pbStoreProduct{
+    optional int32 id = 1;
+    optional string product_id = 2;
+    optional int32 gold = 3;
+    optional int32 reward_gold = 4;
+    optional int32 money = 5;
+    optional int32 icon = 6;
+}
+message pbStoreProductList {
+    repeated pbStoreProduct product_list = 1;
+}
+
+message pbInlaidJewel{
+        optional int32 id   = 1; //宝石id
+        optional int32 tid  = 2; //目标装备id
+        optional int32 num  = 3; //合成的数量
+        optional int32 pos  = 4; //宝石的位置
+}
+
+message pbShopItem{
+        optional int32 id = 1; //商品id
+        optional int32 num = 2; //数量
+}
+
+// 商品信息
+message pbShopMsg{
+    optional int32 base_id =   1;
+    optional int32 is_buy =    2; //商品是否被购买过
+    optional int32 pos =       3; //商品位置
+}
+
+// 神秘商店信息
+message pbSteriousShop{
+    repeated pbShopMsg        shop_list =              1; // 商品信息列表 
+    optional int32            shop_refresh_num =       2; // 神秘商店一天内刷新次数
+    optional int32            shop_last_refresh_time = 3; // 商店刷新时间戳 ， 商店版本的保证
+}
+
+// 神秘商店购买商品
+message pbShopBuy{
+    optional int32 pos =  1;
+}
+// 商城购买商品（普通商品）
+message pbOrdinaryBuy{
+    optional int32 base_id =  1;
+    optional int32 num =      2;
+}
+
+// 热卖商品
+message pbSellingShop{
+    optional int32 base_id  =  1; // 商品id
+    optional int32 num  =      2; // 玩家购买的次数
+    optional int32 buy_times = 3; // 商品一天内被购买总次数
+}
+
+// 热卖商品列表
+message pbSellingList{
+        repeated pbSellingShop shop_list  = 1;
+}
+
+
+// 抢购商品信息
+message pbActivityShopMsg{
+    optional int32 id =                    1; // 抢购商品Id
+    optional int32 activity_remain_num =   2; // 抢购商品世界剩余量
+    optional int32 player_remain_num =     3; // 玩家还能的购买数量
+}
+
+// 抢购商城基本信息 
+message pbActivityShop{
+    optional int32 timestamp =               1; // 时间戳
+    optional int32 activity_id =             2; // 当前抢购活动的Id
+    repeated pbActivityShopMsg shop_list =   3; // 抢购商城所有商品信息
+}
+
+
+message pbUpgradeSkillCard{
+    optional int32 id = 1;
+    repeated pb_common.pbGoodsInfo consume_list = 2;
+}
+
+message pbChoujiangInfo{
+    optional int32 coin_timestamp =               1; // 金币免费刷的时间戳
+    optional int32 gold_timestamp =               2; // 钻石免费刷的时间戳
+    optional int32 coin_free_num  =               3; // 金币免费刷的次数
+}
+
+message pbChoujiang{
+    optional int32 money_type =               1; // 货币类型 金币0、钻石1
+    optional int32 buy_num    =               2; // 购买次数 1、10
+    optional int32 is_free    =               3; // 免费0、购买1    
+}
+
+message pbChoujiangGoods{
+    optional int32 goods_id = 1; //商品id
+    optional int32 num      = 2; //数量
+}
+
+// [{goods_id, num} ....]
+message pbChoujiangResult{
+    repeated pb_common.pbGoodsInfo result_list = 1; //抽取的物品列表
+}
+
+message pbGeneralStoreInfo{
+    optional int32 store_type         = 1; // 神秘商城的类型
+    optional pbSteriousShop shop_info = 2; // 神秘商城的商品信息
+} 
+
+message pbGeneralStoreBuy{
+    optional int32 store_type = 1; // 神秘商城的类型
+    optional int32 pos        = 2; // 物品的位置
+}
+
+message pbSkillId{
+    optional int32 id = 1;
+}
+
+message pbSkillIdList{
+    repeated pbSkillId List = 1;
+}
+
+// 协议号：15104
+// 紫色装备属性转移为橙色装备
+// c >> s
+//      pbsmriti
+// s << c
+//      null
+
+// 协议号：15103
+// 获取技能卡记录
+// c >> s
+//      null
+// s << c
+//      pbSkillIdList
+
+// 协议号：15110
+// 购买时装
+// c >> s
+//      pbid32
+// s << c
+//      null
+
+// 协议号：15560
+// 获取神秘商城信息
+// c >> s
+//       pbid32{id = StoreType }
+// s << c
+//       pbGeneralStoreInfo
+
+// 协议号：15561
+// 刷新神秘商城
+// c >> s
+//       pbid32{id = StoreType}
+// s << c
+//       pbGeneralStoreInfo
+
+// 协议号：15562
+// 神秘商城购买
+// c >> s
+//       pbGeneralStoreBuy
+// s << c
+//       pbGeneralStoreBuy
+
+// 协议号：15900 
+// 获取抽奖信息
+// c >> s
+//       null
+// s << c
+//       pbchoujianginfo
+
+// 协议号：15901
+// 抽奖
+// c >> s
+//       pbchoujiang
+// s << c
+//       pbchoujiangresult
+
+
+// 协议号：15910
+// 充值
+// c >> s
+//       pbid32{id = MoneyNum}
+// s << c
+//       null
+
+// 协议号：15911
+// 领取首充礼包
+// c >> s
+//       pbId32{id = type 0首充, 1月卡}
+// s << c
+//       pbId32{id = type 0首充, 1月卡}
+
+// 协议号：15913
+// 购买月卡,月卡续费
+// c >> s
+//       pbId32{id = type 0购买月卡, 1月卡续费}
+// s << c
+//       pbId32{id = type 0购买月卡, 1月卡续费}
+
+
+// 协议号：15501 
+// 神秘商店之请求获取
+// c >> s
+//       null
+// s << c
+//       pbsteriousshop
+
+// 协议号：15008
+// 查看物品信息
+// c >> s
+//       pbid32
+// s << c
+//       #pbgoods
+
+// 协议号：15300 
+// 勋章升级
+// c >> s
+//       pbid32{id}
+// s << c
+//       null
+
+// 协议号：15301 
+// 激活勋章
+// c >> s
+//       null
+// s << c
+//       null
+
+// 协议号：15501
+// 神秘商店之请求获取
+// c >> s
+//       null
+// s << c
+//       pbsteriousshop
+
+// 协议号：15502
+// 神秘商店之请求刷新
+// c >> s
+//       null
+// s << c
+//       pbsteriousshop
+
+// 协议号：15503
+// 神秘商店之购买商品
+// c >> s
+//       pbshopbuy
+// s << c
+//       15503 <<>>
+
+// 协议号：15504
+// 竞技场神秘商店之请求获取
+// c >> s
+//       null
+// s << c
+//       pbsteriousshop
+
+// 协议号：15505
+// 竞技场神秘商店之请求刷新
+// c >> s
+//       null
+// s << c
+//       pbsteriousshop
+
+// 协议号：15506
+// 竞技场神秘商店之购买商品
+// c >> s
+//       pbshopbuy
+// s << c
+//       15503 <<>>
+
+
+// 协议号：15510
+// 商场之获取热卖物品列表
+// c >> s
+//       null
+// s << c
+//       15510 pbsellinglist
+
+// 协议号：15511
+// 商场之购买商品
+// c >> s
+//       pbordinarybuy
+// s << c
+//       15511 <<>>
+
+// 协议号：15512
+// 竞技场商场之获取热卖物品列表
+// c >> s
+//       null
+// s << c
+//       15512 pbsellinglist
+
+// 协议号：15513
+// 竞技场商场之购买商品
+// c >> s
+//       pbordinarybuy
+// s << c
+//       15513 <<>>
+
+// 协议号：15555
+// 获取抢购活动信息
+// c >> s
+//       15555 <<>>
+// s << c
+//       15555 pbactivityshop
+
+// 协议号：15556
+// 抢购商品
+// c >> s
+//       15556 pbshopitem
+// s << c
+//       15556 <<>> & 15001
+// 错误 9001
+
+
+
+
+// 协议号：15000 
+// 获取所有物品 - 包括已装备斗魂
+// c >> s
+//       null
+// s << c
+//       pbGoodsList{
+//                   goods_list   // 所有物品列表
+//       }
+
+// 协议号：15001
+// 背包物品变更协议
+// c >> s
+//       null
+// s << c
+//       pbGoodsChanged{
+//                     added_list   // 新物品加入
+//                     deleted_list // 物品删除
+//                     updated_list // 物品更新
+//       }
+
+// 协议号：15010
+// 分解装备
+// c >> s
+//      pbId32{
+//                  id     // 物品唯一id
+//     }
+// s >> c
+//       15001
+
+// 协议号：15100
+// 穿截装备
+// c >> s
+//      pbEquipMove{
+//                  id     // 物品唯一id
+//     }
+// s >> c
+//     and 15001
+
+// 协议号:15101
+// 卸下装备
+// c >> s
+//     pbEquipMove{
+//                 id     // 物品唯一id
+//     }
+// s >> c
+//     and 15001
+
+// 协议号:15102
+// 技能卡装备
+// c >> s
+//     pbGoodsList{
+//                 goods_list     // 物品唯一id
+//     }
+// s >> c
+//     and 15001
+
+// 协议号：15200
+// 强化装备
+// c >> s
+//     pbEquipStrengthen{
+//                     id       // 需要强化的装备唯一id
+//                     num       // 强化次数
+// s >> c
+//       pbId32r{
+//              id       // 强化的详情,[0,1,Reason],0是失败，1是成功，Reason是中断原因
+//       }
+//       and  15001
+
+
+// 协议号：15201
+// 装备升星
+// c >> s
+//       pbEquipAddStar{
+//                     id    // 升星目标
+//                     num   // 升星次数
+//       }
+// s >> c
+//       pbId32r{
+//              id       // 升星详情，同强化
+//       }
+//       15001       
+//       所有失败走错误协议9001
+
+// 协议号：15202
+// 技能卡升级
+// c >> s
+//       pbUpgradeSkillCard
+// s >> c
+//      15001
+
+
+// 协议号：15401
+// 宝石镶嵌
+// c >> s
+//       pbInlaidJewel{
+//               id,
+//               tid,
+//               pos
+//       }
+// s >> c
+//       15001  
+
+// 协议号：15402
+// 宝石合成
+// c >> s
+//       pbInlaidJewel{
+//               id,
+//               num
+//       }
+// s >> c
+//       15001  
+
+// 协议号：15403
+// 宝石摘除
+// c >> s
+//       pbInlaidJewel{
+//               tid,
+//               pos
+//       }
+// s >> c
+//       15001  
+
+// 协议号：15404
+// 宝石摘除全部
+// c >> s
+//       pbInlaidJewel{
+//               tid
+//       }
+// s >> c
+//       15001
+
+
+// 奖励结构
+message pbReward{
+    optional int32 id = 1;       // %%奖励编号
+    optional int32 goods_id = 2; // 1 - 元宝 3 - 金钱 5 - 封印值 6 - 龙魄
+                                 // 9 - 体力 20 - 经验
+    optional int32 num = 3;      // 奖励数目
+    optional int32 bind = 4;     // 绑定属性字段，暂时未用到
+    optional int32 type = 5;     // 类型
+    optional int32 day = 6;      // 天数
+}
+
+message pbRewardList{
+    optional int32    id = 1;
+    optional int32    type = 2;
+    optional int32    timestamp = 3;
+    repeated pbReward reward_list = 5;
+}
+
+message pbCdkReward{
+    optional    int32   type    =   1;
+    optional    string  cdk     =   2;
+}
+
+
+// // ==== 传承 ====
+// // 协议号：15020
+// // c >> s:
+// //     pbsmriti
+// // s >> c:
+// //     15001
+
+
+// // ==== 获取商店物品列表 ====
+// // 协议号：15513
+// // c >> s:
+// //     pbItemShop
+// //       id                                            // 商店ID(NPC商店ID，商城为1, 道具店2)
+// //       type                                          // 如果是商城，那么对应商城子类型
+// // s >> c:
+// message pbItemShop {
+//         optional int32  id = 1;                            // 商店ID(NPC商店ID，商城为1, 道具店2)
+//         optional int32  type = 2;                          // 商店子类型(NPC商店为11，神秘商店为12
+//                                                            // 商城为相应的商城子类型：1热卖，2常用道具，3宠物道具，4宝石护符，
+//                                                            //                       5绑定商城，6限时抢购，10VIP商店
+//         repeated pbItem item_list = 4;                     // 物品列表
+//         optional int32  timestamp = 5;                     // 上一次的刷新时间戳
+//         optional int32  direct_equip = 6;                  // 直接穿戴
+//         optional int64  partner_id = 7;                    // 穿戴目标
+// }
+
+// // ==== 购买物品 ====
+// // 协议号：15520
+// // c >> s:
+// //     pbItemShop
+// //       id
+// //       type
+// //       pbItem {
+// //         base_id
+// //         quantity}
+
+// // s >> c:
+// //     pbItemShop
+// //       result                                         // 购买结果： 0 => 失败1 => 成功2 => 要购买的物品不存在3 => 铜钱不足
+//                                                         //           4 => 元宝不足5 => 绑定元宝不足6 => 背包空间不足
+//                                                         //           7 => 每天只限买一次8 => 购买数量已经达到上限9 => 只有VIP才能购买VIP商店物品
+
+                                      //           3 => 铜钱不足4 => 背包空间不足
+
+// // ==== 更换装备 ====
+// // 协议号：15530
+// // c >> s:
+// //     pbItemExchange
+// //       target_id                                      // 装备物品Id
+// //       target_container                               // 装备对象：1角色，2伙伴
+// //       target_position                                // 装备格子位置：0默认位置，1武器，2戒指，3项链，4头盔，
+//                                                         //               5铠甲，6护肩，7腰带，8鞋子，9时装
+// //                                                      // 伙伴ID，若角色装备物品则该字段为0
+// // s >> c:
+// //     pbItemExchange                                   // 装备结果：0 => 失败1 => 成功2 => 物品不存在3 => 物品不属于你所有
+//                                                         //           4 => 物品不在背包5 => 等级不符6 => 装备位置错误
+//                                                         //           7 => 装备格子错误8 => 职业不符合
+
+// // ==== 卸下装备 ====
+// // 协议号：15531
+// // c >> s:
+// //     pbId64
+// // s >> c:
+// //     pbItemExchange                                   // 装备结果
+
+
+// ======= 购买商城物品 =======
+// 协议号：15030
+// c >> s:
+//     pbShopItem{id num}
+// s >> c:
+//     null
+
+// ======= 客户端奖励 =======
+// 协议号：15500
+// c >> s:
+//     null
+// s >> c:
+//     pbrewardlist

@@ -1,0 +1,171 @@
+package pb_55;
+import "pb_common.proto";
+
+// ==== 发起战斗====
+// 协议号：55001  
+// c >> s:
+message pbStartCombat {
+        optional int64  id     = 1;                             // 角色id
+        optional int32  type   = 2;                           // Fight Type 1pvp 2pve
+        optional int32  value1 = 3;
+        optional int32  value2 = 4;
+        optional int32  value3 = 5;
+}
+
+message pbCombatTarget{
+        optional  int32  id          = 1;                    // 角色fighter_unique_id
+        optional  int32  pos         = 2;                    // 角色站位
+        optional  int32  target_type = 3;                    // 1为主目标 2为次目标
+}
+message pbCombatBuff{
+        optional  int32     op_type                         = 4;     // 0-noaction | 1-add | 2-remove | 3-continue
+        optional  int32     id                              = 5;     // BUFF唯一ID
+        optional  int32 	buff_id							= 1;     // buff id
+        optional  int32 	buff_type						= 2;     // buff 类型
+        optional  int32 	continue_value					= 3;     // 持续回合数
+}
+message pbCombatFighter{
+        optional	int32			unique_id				= 1;   // 战斗单位唯一编号
+        optional 	int64   		id       				= 2;   // PlayerID
+        optional	string			name					= 3;   // name
+        optional	int32			lv						= 4;   //
+        optional	int32			pos						= 5;
+        optional	int32			hp_lim					= 6;
+        optional	int32			hp						= 7;
+        optional	int32			mp						= 8;
+        optional	int32			stunt_skill_id			= 9;    // 绝技id
+        optional	int32			resource_id				= 10;   
+        optional	int32			career_id				= 11;   // 武魂职业|真实职业
+        optional	int32			attacker_resource_id	= 12;   // 暂未使用
+        optional	int32			deffender_resource_id	= 13;   // 暂未使用
+        repeated	pbCombatBuff	buffs					= 14;   // 初始化buff列表
+        optional    int32           gender                  = 15;   // 性别
+        optional    int32           career                  = 16;   // 真实职业 - 不受主角武魂影响
+        optional    int32           normal_skill_id         = 17;   // 普通攻击技能
+        repeated    int32           passive_skill_ids       = 18;
+        optional    int32           weaponbase              = 19;   
+        optional    int32           mountbase               = 20;
+        optional    int32           equipbase               = 21;
+        optional    int32           fighter_type            = 22;   // 战斗单位类型 1 玩家 2 伙伴 3  6 普通怪 100 灵兽
+        repeated    int32           stunt_skill_ids         = 23;   // 所有绝技
+}
+
+// 伤害信息
+message pbCombatHurtAttri{
+        optional    int32           hp                      = 1;    // hp 吸血，扣血
+        optional    int32           mp                      = 2;    // mp
+        optional    int32           hp_lim                  = 33;   // hp_lim
+        repeated    pbCombatBuff    buffs                   = 3;    // 所附加的BUFF
+        optional    int32           flag_death              = 4;    // 死亡 
+        optional    int32           flag_frozen             = 5;    // 冻结 <> 0 冻结，0：恢复非冻结
+        optional    int32           flag_sleep              = 6;    // 睡眠 -1叫醒 <> 0 生效 值为持续回合数
+        optional    int32           flag_swim               = 7;    // 晕迷 -1叫醒 <> 0 生效
+        optional    int32           flag_coma               = 8;    // 假死 -1叫醒 <> 0 生效
+        optional    int32           flag_silence            = 9;    // 沉默 -1叫醒 <> 0 生效
+        optional    int32           flag_chaos              = 10;   // 混乱 -1叫醒 <> 0 生效
+        optional    int32           flag_fatal              = 11;   // 致命标记（秒杀） <> 0生效
+        optional    int32           flag_meta               = 12;   // 触发幻化标记 -1触发幻化
+        optional    int32           flag_meta_rate          = 13;   // 幻化概率 客户端暂时没用
+        optional    int32           flag_miss               = 14;   // 丢失 概率闪避 <>0触发MISS
+        optional    int32           flag_beheaded           = 15;   // 斩杀 <> 0 生效
+        optional    int32           flag_wreck              = 16;   // 破击 <> 0 生效
+        optional    int32           flag_crit               = 17;   // 暴击 <> 0 生效
+        optional    int32           flag_parry              = 18;   // 格档 <> 0 生效
+        optional    int32           flag_back_to_bite       = 19;   
+        optional    int32           flag_unyiedlding        = 20;   // 不屈 -1 触发不屈
+        optional    int32           flag_rebound            = 21;   // 反弹 <>0 触发对方反弹
+        optional    int32           flag_shift              = 22;   // 伤害转移
+        optional    int32           flag_absorb_sub         = 23;   // 吸收扣除  盾破
+        optional    int32           flag_absorb             = 24;   // 吸收的血量 <> 0
+        optional    int32           flag_vampire            = 25;   // <> 触发吸血
+        optional    int32           flag_hit_cnt            = 26;   // 连击数
+        optional    int32           hit_cnt                 = 27;   // 第几连击数   
+        optional    int32           flag_strengthen         = 28;   //  %%  触发强化<>0
+        optional    int32           flag_weaken             = 29;   //  %%  触发弱化<>0
+        optional    int32           flag_firm               = 31;   //  %%  触发刚烈<>0
+        optional    int32           flag_hide               = 32;   // 隐身标记 >0 隐身 =0 现身
+}
+message pbCombatEffect{
+        optional 	int32   		atk_pos       			= 1;    // 攻击者位置
+        optional    int32           atk_player_id           = 2;    // 攻击者fighter.unique_id
+        optional    int32           def_pos                 = 3;    // 被攻击者位置
+        optional    int32           def_player_id           = 4;    // 被攻击者fighter.uinque_id
+		optional    int32           passive_skill_id        = 5;    // 触发该effect的被动技能id，如果该effect是回合主动行动的技能造成的，则此字段为0，避免特效重复播放
+        optional 	int32   		type       				= 6;    //
+        optional 	int32   		effect_point			= 7;    // 触发时间点：攻击前攻击方被动技能触发before_atk ....
+        optional 	int32   		effect_type				= 8;    // 触发类型  ：吸血|致命|反击|连接,，服务器端用
+        repeated    pbCombatHurtAttri hurt_list             = 9;    // 伤害列表 一种伤害，一个HurtAttri, pbCombatRound.hurt中只有一个元素
+}
+
+message pbCombatRound{
+        optional   int32           unique_id                = 1;    //第几回合
+        optional   int32           id                       = 2;
+        optional   int32           pos                      = 3;
+        optional   int32           atk_type                 = 4;    // 1普通 2绝技
+        optional   int32           export_type              = 5;    // 1物理近战 2物理远程 3魔法
+        optional   int64           attacker_id              = 6;    // fighter.unique_id
+        optional   int32           attack_skill             = 7;    // 释放技能id(加血...)
+        repeated   pbCombatTarget  master_targets           = 8;    // 所有目标主目标在前，根据target_type区别，1为主目标，2为次目标
+        repeated   pbCombatEffect  round_begin              = 9;    // dot, 属性增长
+        repeated   pbCombatEffect  before_atk               = 10;   // 致命 pre_attack 同时 攻击者被动技能
+        repeated   pbCombatEffect  before_def               = 11;   // 被动技能：[100%闪避,100%格挡]，100%格挡 hit同时 
+        repeated   pbCombatEffect  hurt                     = 12;   // 造成伤害(可能闪避) hiting 一个target 一个effect 无passive_skill_id
+        repeated   pbCombatEffect  at_atking                = 13;   // 吸血,眩晕 hiting
+        repeated   pbCombatEffect  at_defing                = 14;   // 吸收伤害，，攻击者受到伤害  hiting
+        repeated   pbCombatEffect  all_buffs                = 20;   // 所有BUFFs保存点
+        repeated   pbCombatEffect  after_def                = 15;   // 反击,追击,连接
+        repeated   pbCombatEffect  after_atk                = 16;   // 回蓝，加怒气, buff, disbuff
+        repeated   pbCombatEffect  ext_hurt                 = 17;   //
+        repeated   pbCombatEffect  round_end                = 18;
+        repeated   pbCombatTarget  slave_targets            = 19;
+}
+
+message pbCombatReport{
+        optional   string          report_id                = 1;
+        optional   int32           result                   = 2;    
+        optional   int32           final                    = 3;    // 0 draw 1 win 2 lose
+        optional   int32           result_lv                = 4;
+        optional   int32           copy_id                  = 5;
+        optional   int32           version                  = 6;
+        optional   int32           can_skip                 = 7;
+        optional   int64           attacker_id              = 8;
+        optional   int32           attacker_unique_id       = 9;
+        optional   int32           attacker_camp_id         = 10;
+        repeated   pbCombatFighter attacker_list            = 11;
+        repeated   int32           attacker_dead            = 22;
+        optional   pbCombatFighter attacker_beast           = 12;
+        optional   int64           defender_id              = 13;
+        optional   int32           defender_unique_id       = 14;
+        optional   int32           defender_camp_id         = 15;
+        repeated   pbCombatFighter defender_list            = 16;
+        repeated   int32           defender_dead            = 23;
+        optional   pbCombatFighter defender_beast           = 17;
+        repeated   pbCombatEffect  prepare_effect           = 21;
+        repeated   pbCombatRound   report_list              = 18;
+        repeated   int32           active_skill_list        = 19;
+        repeated   int32           passive_skill_list       = 20;
+}
+
+message pbCombatReportList {
+        repeated pbCombatReport combat_report_list = 1;
+}
+
+// ==========战斗奖励协议=============
+// 协议号:55100
+// c >> s：
+//       无
+// s >> c:
+//     pbCombatReward{
+//     }
+
+
+// ===========战报查询===================
+// 协议号：55002
+// c >> s:
+//      pbIdStrng{
+//                id
+//      }
+// s >> c:
+//      pbCombatReport{
+//      }
+

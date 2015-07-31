@@ -1,0 +1,1097 @@
+package pb_40;
+import "pb_common.proto";
+
+message pbLeague{
+        optional int32 id = 1;
+        optional string name = 2; //名字
+        optional int32 cur_num = 3; //当前人数
+        optional int32 max_num = 4; //最大人数
+        optional int32 lv = 5; //工会等级
+        optional int32 ability_sum = 6; //总战斗力
+        optional int32 join_ability = 7; //加入要求的战斗力
+        optional string declaration = 8; //工会宣言
+        optional string president = 9; //会长名字
+        optional int32 rank = 10; //工会排名
+        optional int32 league_gifts_num = 11; // 公会批次红包数
+        optional int32 apply_league_fight = 12;  // 工会战报名 0表示未报名,1表示报名
+        optional int32 league_exp = 13;
+        optional int32 g17_guild_id = 14;
+        optional string g17_guild_name = 15;
+}
+
+message pbLeagueList{
+        repeated pbLeague league_list = 1;
+        optional int32 size = 2; //工会总数
+}
+
+message pbLeagueMember{
+        optional int64 player_id = 1;
+        optional int32 title = 2; //职位
+        optional int32 contribute = 3; //贡献值
+        optional string name = 4;
+        optional int32 lv = 5;
+        optional int32 ability = 6;
+        optional int32 g17_join_timestamp = 7;
+}
+
+message pbLeagueMemberList{
+        repeated pbLeagueMember member_list = 1;
+}
+
+message pbGetLeague{
+        optional int32 last_key = 1; //上次的key
+        optional int32 type = 2; //翻页类型 1：上一页 2：下一页
+}
+
+message pbPlayerGifts{
+    optional int32 gifts_id = 1; // 礼包 id
+    optional int32 timestamp = 2; // 到期时间戳 
+    optional int32 all_num = 3; // 礼包总数 
+    optional int32 remain_num = 4; // 剩余礼包数量
+    optional int32 recharge_gold_num = 5;// 充值钻石总数
+    optional int32 sum_value = 6; // 所有礼包总价值
+    optional int32 last_send = 7; // 上次发送的时间戳
+    optional int32 day_remain_num = 8; //今日派发礼包剩余数量
+}
+
+message pbOwnGifts{
+    repeated pbPlayerGifts own_gifts_list = 1; // 自身礼包列表
+}
+
+message pbLeaGifts{
+        optional int32 gifts_id = 1; // 礼包 id
+        optional int32 timestamp = 2; // 到期时间戳 
+        optional string name = 3; // 谁发放的礼包
+        optional int32 all_num = 4; // 礼包总数 
+        optional int32 remain_num = 5; // 剩余礼包数量
+        optional int32 value = 6; // 单个礼包价值
+        optional int32 has_recv = 7; //是否领取过了(0没有 1是)
+}
+
+message pbLeagueGifts{
+    repeated pbLeaGifts league_gifts_list = 1; // 该公会所有的礼包
+}
+
+message pbGiftsId{
+    optional int32 gifts_id = 1;
+}
+
+message pbOneKeySendMsg{
+    repeated pbGiftsId send_success_list = 1;
+}
+
+message pbSendGiftsMsg{
+    optional int32 gifts_id = 1;
+    optional int32 gifts_num = 2;
+}
+
+message pbGiftsRecord{
+    optional int32 timestamp = 1; 
+    optional string send_name = 2; // 发送者名字
+    optional string recv_name = 3; // 接受者名字
+    optional int32 type = 4; // 发送0, 接受1
+    optional int32 value = 5; // 价值
+}
+
+message pbGiftsRecordList{
+    repeated pbGiftsRecord record_list = 1;
+}
+
+message pbLeagueHouseRecord{
+    optional int32 timestamp = 1; 
+    optional string name = 2;
+    optional int32 value = 3;
+}
+
+message pbLeagueHouse{
+    repeated pbLeagueHouseRecord record_list = 1;
+    optional int32 gold = 2;
+}
+
+message pbMemberSendMsg{
+    optional string name = 1;
+    optional int32 value = 2;
+}
+
+message pbMemberSendList{
+    repeated pbMemberSendMsg list = 1;
+}
+
+message pbMemberGetListType{
+    optional int32 type = 1; // 0 表示领取排行榜, 1表示发放排行榜
+}
+
+message pbBossSendGold{
+    optional int32 gold_num = 1;
+}
+
+message pbBossInviteMsg{
+    optional string boss_name = 1;
+    optional string league_name = 2;
+    optional int32 league_id = 3;
+}
+
+message pbAddLeagueMsg{
+    optional int32 league_id = 1;
+    optional int32 type = 2; // 0表示主动加, 1表示接受邀请加
+}
+
+message pbPointSendMsg{
+    optional string name = 1;
+    optional int32 lv = 2;
+    optional int32 league_lv = 3; // 在公会的等级
+    optional int32 player_id = 4;
+}
+
+message pbPointSendMsgList{
+    repeated pbPointSendMsg list = 1;
+}
+
+message pbPointSend{
+    optional int32 gifts_id = 1; 
+    optional int32 player_id = 2;
+}
+
+message pbRequestGiftsMsg{
+    optional string name = 1;
+    optional int32 lv = 2;
+    optional int32 league_lv = 3; // 在公会的等级
+    optional int32 gifts_num = 4; // 剩余的批次红包
+    optional int32 player_id = 5;
+    optional int32 is_request = 6; // 0表示还可以请求，1表示不可以请求
+}
+
+message pbRequestGiftsMsgList{
+    repeated pbRequestGiftsMsg list = 1; 
+}
+
+message pbRequestPlayerGiftsMsg{
+    optional string name = 1;
+    optional int32 player_id = 2;
+}
+
+message pbRequestPlayerGiftsMsgList{
+    repeated pbRequestPlayerGiftsMsg list = 1;
+}
+
+message pbG17GuildQuery{
+        optional string   name     = 1;
+        optional int32    guild_id = 2;
+}
+
+message pbG17GuildMember{
+        optional    int32       guild_id      = 1;
+        optional    string      guild_name    = 2;
+        optional    int32       title         = 4;
+        optional    int32       number        = 5;
+}
+
+message pbG17Guild{
+        optional    int32       guild_id      = 1;
+        optional    string      guild_name    = 2;
+        optional    int32       status        = 3;    // 申请状态
+        optional    string      owner_user_id = 4;      // 会长userid
+}
+
+message pbG17GuildList{
+        repeated    pbG17Guild  guilds        = 1;
+}
+
+
+// 协议号：40000
+// 工会列表
+// c >> s
+//       pbGetLeague
+// s << c
+//       pbleaguelist
+
+// 协议号：40001
+// 创建工会
+// c >> s
+//       pbleague{name, declaration}
+// s << c
+//       null
+
+// 协议号：40002
+// 自己工会信息
+// c >> s
+//       null
+// s << c
+//       pbleague
+
+// 协议号：40003
+// 工会成员列表
+// c >> s
+//       null
+// s << c
+//       pbleaguememberlist
+
+// 协议号：40004
+// 离开工会
+// c >> s
+//       null
+// s << c
+//       null
+
+// 协议号：40005
+// 加入工会
+// c >> s
+//       pbaddleaguemsg
+// s << c
+//       null
+
+// 协议号：40006
+// 踢出工会
+// c >> s
+//       pbid64
+// s << c
+//       null
+
+// 协议号：40007
+// 委任职位
+// c >> s
+//       pbleaguemember{id, title}
+// s << c
+//       null
+
+// 协议号：40008
+// 修改工会宣言
+// c >> s
+//       pbleague{declaration}
+// s << c
+//       null
+
+// 协议号：40009
+// 修改工会加入战斗力
+// c >> s
+//       pbleague{join_ability}
+// s << c
+//       null
+
+// 协议号：40100
+// 获取自身礼包信息
+// c >> s
+//       null
+// s << c
+//       pbowngifts{ pbplayergifts }
+
+// 协议号：40101
+// 获取公会礼包信息
+// c >> s
+//       null
+// s << c
+//       pbleaguegifts{ pbleagifts }
+
+// 协议号：40102
+// 玩家单键发送礼包
+// c >> s
+//       pbsendgiftsmsg
+// s << c
+//       pbleaguegifts{ pbleagifts }
+
+// 协议号：40103
+// 玩家一键发送礼包
+// c >> s
+//       null
+// s << c
+//       40103(pbonekeysendmsg) 
+
+// 协议号：40104
+// 领取工会礼包
+// c >> s
+//       pbid32
+// s << c
+//       40101
+//       pbid32{id = Value}
+
+// 协议号：40105
+// 公会礼包历史记录
+// c >> s
+//       null
+// s << c
+//       pbgiftsrecordlist
+
+// 协议号：40106
+// 获取公会仓库信息
+// c >> s
+//       null
+// s << c
+//       pbleaguehouse
+
+// 协议号：40107
+// 获取手速榜(获取土豪榜 同一条协议)
+// c >> s
+//       pbmembergetlisttype
+// s << c
+//       pbmembersendlist
+
+// 协议号：40108
+// 会长发送礼金
+// c >> s
+//       pbbosssendgold
+// s << c
+//       pbid32
+
+// 协议号：40109
+// 会长发送请求
+// c >> s
+//       pbid32
+// s << c
+//       null
+
+// 协议号：40110
+// 玩家接受邀请
+// c >> s
+//       null
+// s << c
+//       pbbossinvitemsg
+
+// 协议号：40110
+// 玩家接受邀请
+// c >> s
+//       null
+// s << c
+//       pbbossinvitemsg
+
+// 协议号：40111
+// 玩家接受邀请
+// c >> s
+//       null
+// s << c
+//       pbid32{id = RemainGold双倍额度值} 
+
+// 协议号：40200
+// 请求指定发送红包列表
+// c >> s
+//       pbid32{id = gifts_id}
+// s << c
+//       pbpointsendmsglist
+
+// 协议号：40201
+// 玩家指定发送红包
+// c >> s
+//       pbpointsend
+// s << c
+//       null
+
+// 协议号：40202
+// 获取索要红包信息表
+// c >> s
+//       pbid32{id = league_id}
+// s << c
+//       pbrequestgiftsmsglist
+
+// 协议号：40203
+// 向玩家索要红包
+// c >> s
+//       pbid32{id = player_id}
+// s << c
+//       null
+
+// 协议号：40204
+// 被索要者获取索要红包信息
+// c >> s
+//       null
+// s << c
+//       pbrequestplayergiftsmsglist
+
+// 协议号：40205
+// 同意索要红包
+// c >> s
+//       pbid32{id = player_id}
+// s << c
+//       null
+
+// 协议号：40206
+// 拒绝索要红包
+// c >> s
+//       pbid32{id = player_id}
+// s << c
+//       null
+
+// 协议号：40207
+// 是否有红包可领取
+// c >> s
+//       null
+// s << c
+//       pbid32{id = league_gifts_num}
+
+// 协议号：40208
+// 分解礼包
+// c >> s
+//       pbid32{id = GoodsId}
+// s << c
+//       pbid32{id = MultNum}
+
+////////////////////////////////////////////////
+
+message pbLeagueRankInfo{
+    optional int32 League_id = 1;
+    optional int32 rank = 2; // 排名
+    optional string name = 3; // 公会名
+    optional int32 lv = 4; // 公会等级
+    optional int32 cur_num = 5; // 公会人数
+    optional int32 max_num = 6; // 公会人数上限
+    optional int32 ability_sum = 7; // 公会战斗力
+    optional int32 score = 8; // 公会积分
+}
+
+message pbLeagueRankList{
+    repeated pbLeagueRankInfo list = 1;
+    optional int32 size = 2;
+}
+
+message pbLeagueFightRankInfo{
+    optional int32 score = 1; // 战区积分
+    optional int32 rank = 2; // 战力排名
+}
+
+message pbGetLeagueGroupRankInfo{
+    optional int32 last_key = 1; //上次的key
+    optional int32 type = 2; //翻页类型 1：上一页 2：下一页
+    optional int32 league_group = 3; // 段位
+}
+
+message pbLeagueChallengeInfo{
+    optional int32 player_id = 1;
+    optional string name = 2;
+    optional int32 lv = 3;
+    optional int32 title = 4;
+    optional int32 ability_sum = 5;
+    optional int32 thing = 6; // 已掠夺公会资源
+    optional int32 grab_num = 7; // 可掠夺次数
+    optional int32 career = 8;
+    optional int32 mult = 9; // 额外奖励
+}
+
+message pbLeagueChallengeList{
+    repeated pbLeagueChallengeInfo list = 1; 
+}
+
+message pbLeagueChallengeResult{
+    optional int32 enemy_player_id = 1; // 敌方玩家Id
+    optional int32 result = 2; // 挑战结果 挑战结果 0 输, 1 赢, 2 平局
+    optional int32 energy = 3; // 血量比例值
+}
+
+message pbChallengeRecord{
+    optional int32 timestamp = 1;
+    optional string name = 2; // 挑战者
+    optional string enemy_name = 3; // 被挑战者
+    optional int32 result = 4; // 挑战结果 0 输, 1 赢, 2 平局
+    optional int32 league_thing = 5; // 获取的挑战物资
+}
+
+message pbChallengeRecordList{
+    repeated pbChallengeRecord list = 1;
+}
+
+message pbProtectInfo{
+    optional string name = 1; // 守卫者名字
+    optional int32 id = 2; // 守卫者 PlayerId
+}
+
+message pbLeagueFightPoint{
+    optional int32 league_id = 1; // 公会 Id
+    optional int32 point_id = 2; // 据点唯一 Id 
+    optional int32 pos = 3; // 据点位置
+    optional int32 status = 4; // 据点状态 0 守卫状态, 1 占领状态
+    repeated pbProtectInfo protect_info = 5; // 守卫信息
+    repeated pbProtectInfo occurpy_info = 6; // 占领信息
+}
+
+message pbLeagueFightPointList{
+    repeated pbLeagueFightPoint list = 1; // 据点守卫信息
+}
+
+message pbProtectPlayerInfo{
+    optional int32 player_id = 1;
+    optional string name = 2;
+    optional int32 lv = 3;
+    optional int32 ability = 4;
+    optional int32 contribute = 5; // 贡献度
+    optional int32 title = 6;
+    optional int32 contribute_lv = 7; // 贡献等级
+    optional int32 career = 8; 
+}
+
+message pbPointProtectList{
+    repeated pbProtectPlayerInfo list = 1;
+}
+
+message pbAppointPlayer{
+    optional int32 point_id = 1; // 据点唯一Id
+    optional int32 player_id = 2; // 指定守卫者的Id
+}
+
+message pbPointChallengeRecord{
+    optional int32 timestamp = 1;
+    optional string name = 2; // 挑战者名字
+    optional int32 result = 3; // 挑战结果
+    optional int32 thing_reward = 4; // 物资奖励
+}
+
+message pbPointChallengeRecordInfo{
+    repeated pbPointChallengeRecord list = 1;
+}
+
+message pbLeaguePointChallengeResult{
+    optional int32 point_id = 1; // 据点唯一Id值
+    optional int32 result = 2; // 据点挑战结果
+    optional int32 energy = 3; // 血量比例值
+}
+
+message pbLeagueInfo{
+    optional string name = 1;
+    optional int32 league_id = 2;
+    optional int32 league_sn = 3;
+    optional int32 ability = 4; // 战斗力
+    optional int32 group_num = 5; // 战区
+    optional int32 thing = 6;  // 资源数
+    optional int32 occ_point_num = 7;  // 当前攻占据点数
+    optional int32 remain_fight_num = 8; // 掠夺次数
+}
+
+message pbLeagueInfoList{
+    repeated pbLeagueInfo list = 1;
+}
+
+message pbGetPointRecord{
+    optional int32 league_id = 1;
+    optional int32 point_id = 2;
+}
+
+message pbGetLeagueStatu{
+    optional int32 type = 1; // 1报名等待, 2轮空等待, 3处于战斗中, 4处于战斗等待中, 5不在战斗期间内, 6没有报名
+    optional int32 timestamp = 2;// 各个状态结束时间戳
+}
+
+message pbFightRecords{
+    repeated        pbChallengeRecord       def_records = 1;
+    repeated        pbChallengeRecord       atk_records = 2;
+}
+
+
+// 协议号：40300
+// 公会战报名
+// c >> s
+//       null
+// s << c
+//       null
+
+// 协议号：40301
+// 获取公会战区段位排行榜
+// c >> s
+//       pbgetleaguegrouprankinfo
+// s << c
+//       pbLeagueRankList
+
+// 协议号：40302
+// 获取自身公会排名信息
+// c >> s
+//       null
+// s << c
+//       pbLeagueFightRankInfo
+
+// 协议号：40303
+// 获取公会挑战列表
+// c >> s
+//       null
+// s << c
+//       pbLeagueChallengeList
+
+// 协议号：40304
+// 处理公会挑战战报
+// c >> s
+//       pbLeagueChallengeResult
+// s << c
+//       null
+
+// 协议号：40305
+// 获取玩家挑战记录
+// c >> s
+//       pbid32{id = EnemyPlayerId}
+// s << c
+//       pbChallengeRecordList
+
+// 协议号：40306
+// 检查玩家挑战条件
+// c >> s
+//       pbid32{id = EnemyPlayerId}
+// s << c
+//       null
+
+// 协议号：40400
+// 获取工会据点信息列表
+// c >> s
+//       pbid32{id = LeagueId}
+// s << c
+//       两大类, 由 league_id 分类
+//       pbLeagueFightPointList
+
+// 协议号：40401
+// 获取据点守卫玩家信息列表
+// c >> s
+//       pbid32{id = LeagueId}
+// s << c
+//       pbPointProtectList
+
+// 协议号：40402
+// 指定玩家守卫据点
+// c >> s
+//       pbAppointPlayer
+// s << c
+//       null 40400
+
+// 协议号：40403
+// 取消玩家守卫据点
+// c >> s
+//       pbAppointPlayer
+// s << c
+//       null 40400
+
+// 协议号：40404
+// 获取据点挑战记录
+// c >> s
+//       pbGetPointRecord
+// s << c
+//       pbPointChallengeRecordInfo
+
+// 协议号：40405
+// 处理据点挑战战报
+// c >> s
+//       pbLeaguePointChallengeResult
+// s << c
+//       null 40400
+
+// 协议号：40406
+// 请求据点挑战
+// c >> s
+//       pbid32{point_id = PointId}
+// s << c
+//       null
+
+// 协议号：40407
+// 获取公会信息
+// c >> s
+//       null
+// s << c
+//       pbLeagueInfoList
+
+// 协议号： 40408
+// 获取玩家剩余挑战次数
+// c >> s
+//        null
+// s >> c
+//        pbid32{id = num}
+
+// 协议号： 40409
+// 获取军团当前状态
+// c >> s
+//        null
+// s >> c
+//        pbGetLeagueStatu
+
+// 协议号：40410
+// 获取战斗记录
+// c >> s
+//        null
+// s >> c
+//       pbFightRecords{
+//                      def_records
+//                      atk_records
+
+// 协议号： 40411
+// 获取指定军团的记录统计
+// c >> s 
+//        pbid32 {id 指定军团id}
+// s >> c
+//        pbCountRecords
+
+//}
+// 协议号：40500
+// 创建g17公会
+// c >> s
+//      pbG17GuildQuery{
+//                      name
+//      }
+// s >> c
+//      pbLeague // 更新公会信息
+
+
+// 协议号：40501
+// 军团长申请加入公会
+// c >> s
+//      pbG17GuildQuery{
+//                      guild_id
+//      }
+// s >> c
+//       null 成功
+//       error 9001
+
+// 协议号：40502
+// 成员跟随军团长加入公会
+// c >> s
+//        null
+// s >> c
+//        pbLeagueMember 成功
+//        error 9001
+
+// 协议号: 405003
+// 成员退出公会
+// c >> s
+//        null
+// s >> c
+//        null
+
+// 协议号：40504
+// 获取g17公会列表
+// c >> s
+//       null
+// s >> c
+//       pbG17GuildList
+
+// 协议号: 40505
+// 获取自己的g17公会信息
+// c >> s
+//       null
+// s >> c
+//       pbG17Guild
+
+// 协议号：40506
+// 获取自己的g17公会属性
+// c >> s
+//       null
+// s >> c
+//       pbG17GuildMember
+
+// 协议号： 40507
+// 获取可加入的军团列表
+// c >> s
+//        null
+// s >> c
+//        pbLeagueList
+
+message pbMasterCard{
+    optional string id                     = 1; // 技能码
+    optional int32 master_goods_id         = 2; // 师傅技能卡GoodsId
+    optional int32 apprentice_player_id    = 3; // 徒弟的玩家Id
+    optional string apprentice_player_name = 4; // 徒弟昵称
+    optional int32 card_status             = 5; // 技能卡状态
+    optional int32 work_day                = 6; // 技能卡进度
+}
+
+message pbApprenticeCard{
+    optional string id                    = 1; // 技能码
+    optional int32 master_player_id       = 2; // 师傅的玩家Id
+    optional string master_player_name    = 3; // 师傅昵称
+    optional int32 apprentice_goods_id    = 4; // 徒弟技能卡GoodsId
+    optional int32 card_status            = 5; // 技能卡状态 0自身卡, 1未冻结, 2冻结, 3出师卡未领奖, 4出师卡领奖
+    optional int32 work_day               = 6; // 技能卡进度 
+}
+
+message pbOwnCardsInfo{
+    repeated pbMasterCard master_card_list         = 1; // 师傅拥有卡
+    repeated pbApprenticeCard apprentice_card_list = 2; // 徒弟拥有卡
+    optional int32 remain_master_num               = 3; // 剩余拜师次数 
+}
+
+message pbCardinfo{
+    optional string id         = 1; // 卡的Id
+    optional int32 base_id     = 2; // 卡的配置表ID
+    optional int32 card_status = 3; // 卡的状态 0自身卡, 1未冻结, 2冻结, 3出师卡未领奖, 4出师卡领奖  
+}
+
+message pbMasterInfo{
+    optional int32 id             = 1;
+    optional string name          = 2;
+    optional int32 lv             = 3;
+    optional int32 ability        = 4;
+    optional int32 contribute     = 5;
+    optional int32 title          = 6;
+    optional int32 contribute_lv  = 7;
+    repeated pbCardinfo card_list = 8; // 使用拥有的技能卡
+}
+
+message pbAllMasterInfo{
+    repeated pbMasterInfo list = 1;
+}
+
+message pbCountRecord{
+    optional    int64       player_id   =   1;
+    optional    string      player_name =   2;
+    optional    int32       win_times   =   3;
+    optional    int32       loss_times  =   4;
+    optional    int32       points      =   5;
+    optional    int32       things      =   6;
+}
+message pbCountRecords{
+    repeated pbCountRecord    records = 1;
+}
+
+message pbApprenticeRequestInfo{
+    optional int32 id    = 1; // 徒弟PlayerId
+    optional string name = 2; // 徒弟昵称
+}
+
+message pbCardRequest{
+    optional string id = 1; // 卡的Id
+    repeated pbApprenticeRequestInfo list = 2; // 请求者列表
+}
+
+message pbCardRequestList{
+    repeated pbCardRequest list = 1; // 所有卡的请求信息
+}
+
+message pbMasterAgreeMsg{
+    optional string id       = 1; // 技能卡的Id
+    optional int32 player_id = 2; // 徒弟 id 
+}
+
+message pbApprenticeBuyCard{
+    optional string id  = 1; // 需要购买的技能卡Id
+    optional int32 type = 2; // 1:碎片购买 2:钻石购买
+}
+
+// 协议号： 40600
+// 获取技能卡（师傅和徒弟）
+// c >> s
+//        null
+// s >> c
+//        pbOwnCardsInfo
+
+// 协议号： 40601
+// 生成技能码
+// c >> s
+//        pbid32{id = GoodsId}
+// s >> c
+//        pbIdString{id = Code 技能码}
+
+// 协议号： 40602
+// 由技能码获得技能卡
+// c >> s
+//        pbIdString{id = Code 技能码}
+// s >> c
+//        null
+
+// 协议号： 40603
+// 获取军团中所有师傅信息
+// c >> s
+//        null
+// s >> c
+//        pbAllMasterInfo
+
+// 协议号： 40604
+// 驱逐徒弟
+// c >> s
+//        pbIdString{id = Code 技能码}
+// s >> c
+//        null
+
+// 协议号： 40605
+// 徒弟销毁技能卡
+// c >> s
+//        pbIdString{id = Code 技能码}
+// s >> c
+//        null
+
+// 协议号： 40606
+// 获取所有技能卡的请求信息
+// c >> s
+//        null
+// s >> c
+//        pbCardRequestList
+
+// 协议号： 40607
+// 同意接受徒弟
+// c >> s
+//        pbMasterAgreeMsg
+// s >> c
+//        null 
+
+// 协议号： 40608
+// 领取出师奖励
+// c >> s
+//        pbIdString{id = Code 技能码}
+// s >> c
+//        null 
+
+// 协议号： 40609
+// 一键删除Code请求信息
+// c >> s
+//        pbIdString{id = Code 技能码}
+// s >> c
+//        null 
+
+// 协议号： 40610
+// 购买师傅技能卡
+// c >> s
+//        pbApprenticeBuyCard
+// s >> c
+//        null 
+
+
+
+////////////////////////////////////
+///阵营战相关
+///////////////////////////////////
+message pbCampWarState{
+        optional    int32           status     = 1;
+        optional    int32           red_cnt    = 2;
+        optional    int32           blue_cnt   = 3;
+        optional    int32           red_score  = 4;
+        optional    int32           blue_score = 5;
+}
+message pbCampWarLeague{
+        optional    int32           league_id   = 1;
+        optional    int32           color       = 2;
+        optional    string          league_name = 3;
+        optional    int32           score       = 4;
+        optional    int32           kill_cnt    = 5;
+}
+message pbCampWarLeagueList{
+        repeated    pbCampWarLeague     red_leagues     = 1;
+        repeated    pbCampWarLeague     blue_leagues    = 2;
+}
+message pbCampWarPlayer{
+        optional    int64           player_id         = 1;
+        optional    int32           type              = 2;
+        optional    int32           group             = 3;
+        optional    int32           color             = 4;
+        optional    string          player_name       = 5;
+        optional    int32           player_lv         = 6;
+        optional    int32           player_career     = 7;
+        optional    int32           player_ability    = 8;
+        optional    int32           hp                = 9;
+        optional    int32           mp                = 10;
+        optional    int32           league_id         = 11;
+        optional    string          league_name       = 12;
+        optional    string          is_online         = 13;
+        optional    int32           score             = 14;  
+        optional    int32           link_kill         = 16;
+        optional    int32           die_times         = 17;
+        optional    int32           die_timestamp     = 18;
+        optional    int32           max_kill_cnt      = 19;
+        optional    int32           room_id           = 20;
+        optional    int32           status            = 21;
+}
+message pbCampWarFighter{
+        optional    int64           player_id         = 1;
+        optional    int32           type              = 2;
+        optional    int32           group             = 3;
+        optional    int32           color             = 4;
+        optional    string          player_name       = 5;
+        optional    int32           player_lv         = 6;
+        optional    int32           player_career     = 7;
+        optional    int32           player_ability    = 8;
+        optional    int32           hp                = 9;
+        optional    int32           mp                = 10;
+        optional    int32           league_id         = 11;
+        optional    int32           score             = 12;
+        optional    int32           room_id           = 13;
+        optional    int32           status            = 14;
+}
+message pbCampWarFighters{
+        repeated    pbCampWarFighter        fighters  = 1;
+}
+message pbCampWarNotify{
+        repeated    pbCampWarFighter        new_join    = 1;      // 新加入玩家
+        repeated    pbCampWarFighter        new_dead    = 2;      // 新退出玩家
+}
+
+message pbCampWarQuery{
+        optional    int32       room_id     =   1;
+        optional    int32       hp          =   2;
+        optional    int32       mp          =   3;
+        optional    int64       defender_id =   4;
+        optional    int32       result      =   5;
+}
+//40700
+// 查询阵营战信息
+// c >> s
+//        null
+// s >> c 
+//       pbCampWarState
+
+//40701
+// 报名参战
+// c >> s
+//        null
+// s >> c
+//        null
+
+//40702
+// 加入战斗
+// c >> s null
+// s >> c null
+
+//40703
+// 退出战斗
+// c >> s null
+// s >> c null
+
+//40704
+// 击杀玩家
+// c >> s 
+//       pbCampWarQuery
+// s >> c 
+//       null
+
+//40705
+// 助攻
+// c >> s 
+//       pbCampWarQuery
+// s >> c 
+//       null
+
+//40706
+// 死亡
+// c >> s 
+//       pbCampWarQuery
+// s >> c 
+//       null
+
+//40707
+// 中途退出
+// c >> s 
+//       pbCampWarQuery
+// s >> c 
+//       null
+
+// 40708
+// 房间初始化
+// c >> s 
+//        null
+// s >> c
+//        pbCampWarNotify{ new_join    // 所有房间成员信息
+
+// 40709 
+// 房间结束
+// c >> s
+//        null 
+// s >> c 
+//        null
+
+// 40710
+// 房间信息更新
+// c >> s
+//        null
+//  s >> c 
+//        pbCampWarNotify{
+//                        new_join    // 新加入玩家
+//                        new_dead    // 死亡玩家
+//        }
+
+// 40711 
+// 获取自己的阵营战信息
+// c >> s
+//       null
+// s >> c
+//       pbCampWarPlayer
+
+// 40712
+// 获取自己公会的阵营战信息
+// c >> s 
+//       null
+// s >> c 
+//       pbCampWarLeague

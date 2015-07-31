@@ -1,0 +1,53 @@
+
+package pb_24;
+
+message pbRankInfo{
+        optional int64 player_id = 1; //玩家id
+        optional int32 career = 2; //职业
+        optional string nickname = 3; // 玩家名字
+        optional int32 level = 4; //等级
+        optional int32 rank = 5; //排名
+        optional int32 value = 6; //排名value
+}
+
+
+message pbRankList{
+        repeated pbRankInfo rank_list = 1; //排行榜列表
+        optional int32 rank = 2; //自己排名
+        optional int32 value = 3; //自己的value
+}
+
+// 协议号：24001
+// 获取战斗力排行榜
+// c >> s
+//      <<>>
+// s << c
+//      pbRankList
+
+// 协议号：24002
+// 获取等级排行榜
+// c >> s
+//      <<>>
+// s << c
+//      pbRankList
+
+// 协议号：24003
+// 获取铜钱花费排行榜
+// c >> s
+//      <<>>
+// s << c
+//      pbRankList
+
+// 协议号：24004
+// 获取金币花费排行榜
+// c >> s
+//      <<>>
+// s << c
+//      pbRankList
+
+// 协议号：24005
+// 世界boss开启排行榜
+// c >> s
+//      <<>>
+// s << c
+//      pbRankList

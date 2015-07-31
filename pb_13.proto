@@ -1,0 +1,480 @@
+package pb_13;
+import "pb_common.proto";
+// ==== 玩家信息 ====
+// 协议号：13001
+// c >> s: 
+//     无
+// s >> c:
+
+message pbDungeonReward{
+    optional int32        goods_id          = 1; // 物品ID
+    optional int32        number            = 2; // 物品数量
+}
+
+
+message pbUser {
+        optional int64  id = 1;                             // 角色id
+        optional string accid = 2;                          // 帐号id
+        optional string accname = 3;                        // 帐号名
+        optional string nickname = 4;                       // 角色名
+        optional int32  career = 5;                         // 职业
+        optional int32  lv = 6;                             // 等级
+        optional int32  exp = 7;                            // 经验
+        optional int32  exp_lim = 8;                        // 升级所需经验
+        optional int32  vip_lv = 9;                         // vip等级
+        optional int32  vip_exp = 10;                       // vip值    
+        optional int32  vip_due_time = 11;                  // vip到期时间戳
+    
+        optional int32  gold = 12;                          // 元宝
+        optional int32  cash_gold = 13;                     // 充值元宝数
+        optional int32  coin = 14;                          // 金钱
+        optional int32  vigor = 15;                         // 体力
+        optional int32  vigor_lim = 16;                     // 体力上限
+        optional int32  cost = 17;                          // cost值
+        optional int32  fpt = 18;                           // 友情值
+        optional int32  friends_limit = 19;                 // 好友上限值
+        optional int32  bag_limit = 20;                     // 包裹数量上限
+        optional int32  status = 21;                        // 角色状态（0正常、2战斗中、3死亡、4蓝名、6打坐、7凝神修炼）
+
+        optional int64  core_id = 22;                       // 核心装备id
+        optional int32  bind_gold = 23;                     // 绑定钻石
+        optional int32  seal = 24;                          // 征途印章
+        optional int32  cross_coin = 25;                    // 跨服竞技场货币
+        optional int64  last_dungeon = 31;                  // 最后通关的副本id
+        optional int32  is_pass_dungeon = 32;               // 是否通过该关卡(0没通过，1通过)
+
+        optional int32  hp = 41;                            // 生命
+        optional int32  hp_lim = 42;                        // 生命上限
+        optional int32  hp_rec = 43;                        // 生命恢复
+        optional int32  mana = 44;                          // 法力
+        optional int32  mana_lim = 45;                      // 法力上限
+        optional int32  mana_rec = 46;                      // 法力恢复
+        optional int32  mana_init = 47;                     // 法力初始值
+        optional int32  fire = 48;                          // 火
+        optional int32  water = 49;                         // 水
+        optional int32  wood = 50;                          // 木
+        optional int32  holy = 51;                          // 光
+        optional int32  dark = 52;                          // 暗
+        optional int32  attack = 53;                        // 攻击
+        optional int32  def = 54;                           // 防御
+        optional int32  power = 55;                         // 战斗力
+
+        optional int32 timestamp_logout = 61;               // 上一次的离线时间
+        repeated pbDungeonReward reward = 62;               // 通关的副本奖励
+        repeated int32  active_skill_ids = 63;              // 角色主动技能
+        repeated int32  passive_skill_ids = 64;             // 角色被动技能
+        optional int32  base_friends_limit = 65;            // 好友基础上限值
+        repeated int32 beginner_step = 66;           //新手步骤
+        optional int32 login_reward_flag = 67;       // 登陆奖励标志
+        optional int32 week_login_days = 68;         // 周连续登陆天数
+        repeated pbOpenBoss open_boss_info = 69; //开启boss的信息
+        optional int32 combat_point = 70;    //竞技点数
+        optional int32 battle_ability = 71;   //战斗力
+        optional int32 honor = 72;           //荣誉点数
+        optional int32 buy_vigor_times = 73; //购买体力次数
+        optional string league_name = 74;  //工会名字
+        optional int32 league_title = 75;         //工会身份
+        optional int32 month_login_days = 76;         //月签到天数
+        optional int32 month_login_flag = 77;    //今天是否签到（月签到）
+        optional int32 return_gold = 78;    // 双倍礼金额度
+        optional int32 fashion = 79; // 时装id
+        optional int32 off_time = 80;  //上次登陆时间
+        optional int32 league_id = 81; // 公会Id
+        optional int32 arena_coin = 82; // 竞技场货币
+        optional int32 league_seal = 83; // 公会印章
+        optional int32 first_recharge_flag = 84; // 首次充值标识 0 未充值 1 充值未领取礼包 2 充值已经领取礼包
+        optional int32 q_coin = 85;
+        optional string qq = 86;
+    optional int32 month_card_day_num = 87; // 月卡剩余可领取天数
+    optional int32 month_card_flag = 88; // 今日是否领取标记, 0 no 1 yes
+}
+
+message pbOpenBoss{
+        optional int32 boss_id  = 1; //boss的id
+        optional int32 today_open_times = 2; //今天开启的次数
+        repeated int32 open_timestamp = 3;   //开启的详细时间
+}
+
+message pbUserList {
+        repeated pbUser user_list = 1;                      // 角色以及伙伴id列表
+}
+
+message pbId64List{
+        repeated int64 ids = 1;                             // id64的列表
+}
+
+// ==== 获取指定ID玩家信息 ====
+// 协议号：13004
+// c >> s:
+//     #pbid64r
+// s >> c:
+//     pbUser
+
+// ==== 领取七日登陆奖励 ====
+// 协议号：13007
+// c >> s:
+//     null
+// s >> c:
+//     null
+
+// ==== 竞技场人物信息 ====
+// 协议号：13008
+// c >> s:
+//     pbId64r
+// s >> c:
+//     pbArenaUserList
+
+// ==== 领取月签到登陆奖励 ====
+// 协议号：13009
+// c >> s:
+//     null
+// s >> c:
+//     null
+
+// message pbHelpBattle{
+//     optional int32 friend_count = 1;           // 好友助战次数
+//     optional int32 strangers_count = 2;        // 陌生人助战次数
+//     optional int32 sum_fpt = 3;                // 总友情点
+//     optional int32 current_fpt = 4;            // 当前获取的友情点
+// }
+
+message pbUserNotifyUpdate{
+        optional int32 type = 1;
+}
+
+// ==== 购买体力 ===
+// 协议号：13010
+// c >> s:
+//        null
+// s >> c:
+//        null
+//  错误9001
+
+
+message pbSkillList{
+        repeated pb_common.pbSkill  skill_list     = 1; //技能列表
+}
+
+message pbSigil{
+        optional int32 id = 1;   //技能Id
+        optional int32 tid = 2;  //目标符印Id
+}
+
+message pbArenaUserList{
+        repeated      pbArenaUser      list = 1;
+}
+
+message pbArenaUser{
+        optional      int32            id = 1;
+        optional      string           nickname = 2;                          // 名字
+        optional      int32            level = 3;                             // 等级
+        optional      int32            career = 4;                            // 职业
+        repeated      pb_common.pbGoods    core = 5;                              // 核心装备
+        repeated      int32            put_on_skill = 6;                      // 穿上的技能
+        repeated      pb_common.pbSkill          skill_list = 7;                        // 技能信息       
+        optional      int32            battle_ability = 8;                    // 战斗力
+}
+//===============pbSkill===================
+//==========技能升级=====
+// 协议号：13300
+// c >> s:
+//       pbId32
+// s >> c:
+//       pbSkillList
+
+//==========技能强化=====
+// 协议号：13301
+// c >> s:
+//       pbId32
+// s >> c:
+//       pbSkillList
+
+//==========切换符印=====
+// 协议号：13305
+// c >> s:
+//       pbSigil
+// s >> c:
+//       pbSkillList
+
+//==========登陆奖励=====
+// 协议号：13307
+// c >> s:
+//       null
+// s >> c:
+//       null
+
+//==========绑定几个技能=====
+// 协议号：13310
+// c >> s:
+//       pbid32r
+// s >> c:
+//       null
+
+//==========获取技能列表=====
+// 协议号：13333
+// c >> s:
+//       null
+// s >> c:
+//       pbSkillList
+//=============技能===============
+
+//==========战斗力发送=====
+// 协议号：13400
+// c >> s:
+//       #pbid32
+// s >> c:
+//       null
+
+
+
+//============组队相关=============
+message pbTeam{
+        optional int64 leaderid   = 1;     //队长id
+        optional string nickname  = 2;     //邀请者名字,或者队长名字
+        repeated pbMember members = 3;     //队员
+        optional int32 dungeon_id = 4;     //副本id
+        optional int32 team_num   = 5;     //房间号
+        optional int32 challenge_type = 6; //约战标志
+}
+
+message pbMember{
+        optional int64      player_id      = 1;
+        optional string     nickname       = 2;
+        optional int32      lv             = 3;
+        optional int32      career         = 4;
+        optional int32      state          = 5;
+        optional int32      battle_ability = 6;
+}
+
+message pbTeamChat{
+        optional int64      player_id   = 1;
+        optional string     msg         = 2;
+}
+
+//==========创建队伍=====
+// 协议号：13200
+// c >> s:
+//       #pbid32{id = 副本Id}
+// s >> c:
+//       13205
+
+//==========邀请好友=====
+// 协议号：13201
+// c >> s:
+//       #pbid32r{id = xxx}
+// s >> c:
+//      9001
+
+//==========被邀请进队=====
+// 协议号： null
+// c >> s:
+//       null
+// s >> c:
+//      13201 pbteam
+
+//==========接受邀请=====
+// 协议号：13202
+// c >> s:
+//       pbteam{team_num, dungeon_id}
+// s >> c:
+//       13202空包 && 13205
+
+//==========踢人=====
+// 协议号：13203
+// c >> s:
+//       #pbid32{id = Tid}
+// s >> c:
+//       13205  (被踢出的人收到一个13203的空包)
+
+//==========离开队伍=====
+// 协议号：13204
+// c >> s:
+//      null
+// s >> c:
+//       13204 空包
+
+//==========查看队伍信息=====
+// 协议号：13205
+// c >> s:
+//      null
+// s >> c:
+//       pbTeam
+
+//=========准备=============
+// 协议号：13206
+// c >> s:
+//      null
+// s >> c:
+//       null && 13205
+
+//=========开车=============
+// 协议号：13207
+// c >> s:
+//      null
+// s >> c:
+//       12001 or 9001
+
+//=========队伍聊天=============
+// 协议号：13208
+// c >> s:
+//      pbTeamChat
+// s >> c:
+//       null
+
+//=========约战=============
+// 协议号：13209
+// c >> s:
+//      pbid32
+// s >> c:
+//       null
+
+//=========附近的人=============
+// 协议号：13500
+// c >> s:
+//      null
+// s >> c:
+//       13004
+
+//=========公平竞技推荐=============
+// 协议号：13501
+// c >> s:
+//      null
+// s >> c:
+//       pbfriend
+
+
+message pbPvpRobotAttr{
+    optional int32 id             = 1;
+    optional int32 robot_id       = 2;
+    optional string name          = 3;
+    optional int32 career         = 4;                          
+    optional int32 lv             = 5;                            
+    optional int32 battle_ability = 6;           
+    optional int32 skill_1        = 7;              
+    optional int32 skill_1_lv     = 8;          
+    optional int32 skill_2        = 9;    
+    optional int32 skill_2_lv     = 10;
+    optional int32 skill_3        = 11;             
+    optional int32 skill_3_lv     = 12;               
+    optional int32 skill_4        = 13;                  
+    optional int32 skill_4_lv     = 14;                  
+    optional int32 equ_weapon     = 15;                  
+    optional int32 equ_clothes    = 16;                
+    optional int32 equ_shoes      = 17;                 
+    optional int32 equ_neck       = 18;                  
+    optional int32 equ_ring       = 19;
+    optional int32 equ_pants      = 20;
+    optional int32 weapon_strengthen = 21;
+    optional int32 weapon_star    = 22;
+    optional int32 clothes_strengthen = 23;
+    optional int32 clothes_star   = 24;
+    optional int32 shoes_strengthen = 25;
+    optional int32 shoes_star = 26;
+    optional int32 neck_strengthen = 27;
+    optional int32 neck_star = 28;
+    optional int32 ring_strengthen = 29;
+    optional int32 ring_star = 30;
+    optional int32 pants_strengthen = 31;
+    optional int32 pants_star = 32;
+}
+
+message pbCombatRespon{
+    optional    pbPvpRobotAttr                  robot_attri = 1;
+    optional    pb_common.pbFriend              player_attri = 2;
+}
+
+// 获取机器人
+// 协议号：13140
+// c >> s:
+//      pbid64{id}
+// s >> c:
+//       13140 pbpvprobotattr
+
+message pbVipReward{
+        repeated int32 recv_list = 1;
+}
+
+
+// 获取VIP礼包领取状况
+// 协议号：13020
+// c >> s:
+//      null
+// s >> c:
+//       pbVipReward
+
+// 获取VIP礼包领取状况
+// 协议号：13021
+// c >> s:
+//      pbid32
+// s >> c:
+//       13020
+
+// 公告信息
+// 协议号：13600
+// c >> s:
+//      null
+// s >> c:
+//    pbNoticeList   
+
+message pbNoticeList{
+        repeated pbNotice notice = 1;
+}
+message pbNotice{
+        optional int32 notice_id = 1; //公告ID
+        optional int32 sort_id = 2; //公告有几条 根据sort_id
+        optional int32 type = 3; //1 公告 2 消息 3 紧急消息
+        optional string notice_name = 4;//公告名称
+        optional string headline = 5;//公告类型名称
+        optional string des = 6;//公告描述
+        optional string show_time = 7;// 时间表
+        optional string activity_time = 8;
+        optional int32 function_id = 9;
+}
+
+
+// 查询其它玩家信息
+// 协议号:13150
+// c >> s 
+//       null
+// s >> null
+// >> 14000 通过好友协议返回
+
+
+// message pbCombatAttri{
+        // optional        int64           player_id   = 1;
+        // optional        int32           sn          = 2;
+        // optional        int32           career      = 3;
+        // optional        string          nickname    = 4;
+        // optional        int32           lv          = 5;
+        // optional        int32           ability     = 6;
+        // optional        int32           high_ability = 7;    
+        // repeated        pb_common.pbGoods         equips      = 8;
+        // repeated        int32           stunts      = 9;
+        // optional        pbAttribute     base_attri  = 10;
+        // optional        pbAttribute     final_attri = 11;
+        // optional        int32           league_id   = 12;
+        // optional        string          league_name = 13;
+        // optional        int32           league_title= 14;
+// }
+
+// message pbCombatAttriList{
+        // repeated    pbCombatAttri       attri_list = 1;
+// }
+
+// 13401 查询战斗属性
+// c >> s 
+//       pbid64r
+// s >> c
+//       pbCombatAttriList
+
+// 13601 查询剩余Q券
+// c >> s 
+//       null
+// s >> c 
+//       pbid32
+
+// 13602 绑定QQ
+// c >> s 
+//       pbidstring
+// s >> c 
+//       null or 9001

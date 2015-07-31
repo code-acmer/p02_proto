@@ -1,0 +1,65 @@
+package pb_19;
+import "pb_common.proto";
+
+message pbMailGoods{
+        optional int64 goodsid   = 1;
+        optional int32 goodsum   = 2;
+        optional int32 position  = 3;
+}
+
+message pbMail{
+        optional int32           id            = 1;
+        optional int32           type          = 2;
+        optional int32           timestamp     = 3;
+        optional string          sender_name   = 4;
+        optional int64           sender_id     = 5;
+        optional int64           recv_id       = 6;
+        optional string          recv_name     = 7;
+        optional string          title         = 8;
+        optional string          content       = 9;
+        repeated pbMailGoods     goodslist     = 10;
+        optional int32           state         = 11;
+        optional string          battle_report = 12;
+}
+
+message pbMailList{
+        repeated pbMail  update_list = 1;
+        repeated pbMail  delete_list = 2;
+}
+
+//===========回应客户端发信===============
+// 协议号：19001
+// c >> s:
+//   pbMail{
+//        recv_id,
+//        recv_name,
+//        title,
+//        content,
+//        type
+//   }
+// s >> c:
+//      pbId32
+
+//=============获取信件,提取附件=======================
+// 协议号：19002
+// c >> s:
+//      pbId32             邮件ID
+// s >> c:
+//      pbMailList
+
+
+//==================删除信件===================
+// 协议号：19003
+// c >> s:
+//      pbId32             删除邮件ID
+// s >> c:
+//      pbMailList
+
+//=============获取信件列表======================
+// 协议号：19004
+// c >> s:
+// 
+// message pbMailList{
+//      update_list
+//      delete_list
+//}

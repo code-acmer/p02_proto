@@ -1,0 +1,88 @@
+package pb_17;
+import "pb_common.proto";
+
+message pbBossList{
+        repeated    pbWorldBoss   update_list   = 1;
+}
+   
+message pbWorldBoss{
+        optional    int32     boss_id          = 1;   
+        optional    int32     hp_cur           = 2;   //boss 当前血量
+        optional    int64     player_id        = 3;   // 玩家id
+        optional    string    nickname         = 4;   // 玩家名字
+        optional    int32     start            = 5;   //开启时间
+        optional    int32     stop             = 6;   //结束时间
+        optional    int32     count            = 7;   //当前人数
+        optional    int32     damage           = 8;   //伤害
+        optional    int32     rank             = 9;   //自己的排名
+        repeated    pbCritMsg msg              = 10;   //暴击消息列表
+        repeated    pbRank    rank_info        = 11;  //排行榜信息
+        repeated    int32     crit_damage      = 12;  //暴击伤害
+        optional    int32     state            = 13;  //boss状态(1就不能打了)
+        optional    int32     boss_lv          = 14;  //boss当前的等级
+        optional    int32     hp_lim           = 15;  //boss 总血量
+}
+
+message pbRank{
+        optional    string    nickname         = 1;   //玩家名称
+        optional    int32     damage           = 2;   //造成的伤害
+        optional    int32     career           = 3;   //职业
+}
+
+message pbCritMsg{
+        optional    string    nickname         = 1;   //玩家名称
+        repeated    int32     crit_damage      = 2;   //暴击伤害列表
+}    
+
+// ==== 获取boss列表 ====
+// 协议号：17000
+// c >> s:
+//     无
+// s >> c:
+//     pbBossList
+
+// ==== Boss状态变更 ====
+// 协议号：17001
+// c >> s:
+//     无
+// s >> c:
+//     pbWorldBoss
+
+// ==== boss开启 ====
+// 协议号：17010
+// c >> s:
+//     pbWorldBoss{
+//           boss_id
+//}                
+// s >> c:
+//     pbWorldBoss
+//     17001
+
+// ==== 进入boss场景 ====
+// 协议号：17011
+// c >> s:
+//     pbWorldBoss{
+//           boss_id
+//}                
+// s >> c:
+//     pbWorldBoss
+
+// ==== 挑战Boss ====
+// 协议号：17012
+// c >> s:
+//     pbWorldBoss{
+//           boss_id,
+//           damage,
+//           msg
+//}                
+// s >> c:
+//     null
+
+// ==== 退出Boss场景 ====
+// 协议号：17014
+// c >> s:
+//     pbWorldBoss{
+//           boss_id
+//}                
+// s >> c:
+//     null

@@ -1,0 +1,389 @@
+package pb_12;
+import "pb_common.proto";
+
+message pbDungeonReward{
+    optional int32        goods_id          = 1; // 物品ID
+    optional int32        number            = 2; // 物品数量
+}
+
+message pbHitRewardDetail{
+    optional int32        combo             = 1; // 连击数
+    optional int32        number            = 2; // 宝箱数
+}
+
+message pbSubDungeon{
+        optional int32            id                  = 1;
+        repeated int32            create_portal       = 2;
+        repeated pbWaveMonster    wave_monster        = 3;
+        repeated pbWaveCreature   wave_creature       = 4;
+}
+
+message pbWaveCreature{
+        optional int32             id             = 1;
+        repeated pbDungeonCreature creature_info  = 2;
+}
+
+message pbWaveMonster{
+    optional int32              id                = 1;    
+    repeated pbDungeonMonster   monster_info      = 2;    
+}
+
+message pbDungeonMonster{
+    optional int32           monster_id           = 1;
+    repeated pbMonsterDrop   monster_drop         = 2;
+    optional int32           create_id            = 3;
+}
+
+message pbMonsterDrop{
+    optional int32 goods_id                       = 1;
+    optional int32 number                         = 2;
+}
+
+message pbDungeonCreature{
+        optional int32            create_id           = 1;   //物件创建id
+        repeated pbCreatureDrop     creature_drop       = 2;
+        optional int32            creature_id         = 3;   //物件属性id
+}
+
+message pbCreatureDrop{
+    optional int32            goods_id            = 1;
+    optional int32            number              = 2;
+}
+
+message pbDungeon{
+        optional int32            id		     	    = 1;  
+        optional int32            type			    = 2;
+        optional int32            is_extra	            = 3;
+        repeated pbDungeonReward  reward		    = 4;
+        repeated pbDungeonReward  extra_reward		    = 5;
+        repeated pbDungeonReward  special_reward	    = 6;
+        optional int32            state	                    = 7;     //角色是否死亡标志
+        repeated pbDungeonReward  activity_dungeon_reward   = 8;
+        repeated pbSubDungeon     dungeon_info              = 9;
+        repeated int32            sub_route                 = 10;
+        optional int32            score                     = 11;
+        optional int32            pass_time                 = 12;
+        optional int32            relive_times              = 13;    //复活次数
+        optional int32            team_num                  = 14;
+        optional int32            team_type                 = 15;    //组队类型
+        optional int32            cur_sub_dungeon           = 16;    //当前的字关卡id
+        optional int32            boss_flag                 = 17;    //抢夺boss奖flag
+        optional int32            team_flag                 = 18;    //0不能乱入 1是玩家乱入 2是npc
+        repeated int32            target_list               = 19;    //完成的目标奖励
+        repeated pbDungeonReward  hit_reward		    = 20;    //连击宝箱奖励
+        repeated pbHitRewardDetail hit_reward_detail        = 21;    //连击宝箱规则
+}
+// 副本翻牌
+message pbFlipCard{
+        optional int32            dungeon_id                = 1;  //副本id
+        optional int32            card_type                 = 2;  //翻牌类型
+        optional pbDungeonReward  reward                    = 3;  //奖励
+        optional int32            pos                       = 4;  //翻牌位置
+}
+//极限副本和公平竞技统一了
+message pbChallengeDungeon{
+        optional int32            dungeon_id           = 1; //副本id
+        optional int32            next_dungeon_id      = 2; //下一关的id
+        optional int32            type                 = 3; //副本类型
+        repeated pbDungeonReward  reward               = 4; //客户端发过来的奖励
+        optional int32            state                = 5; //死亡状态
+        optional int32            score                = 6; //副本的分数
+        optional int32            left_times           = 7; //剩余挑战副本次数
+        optional int32            have_pass_times      = 8; //当前已通多少关
+        optional int32            sub_route            = 9;  //路径
+        repeated int32            condition            = 10; //达成条件
+        optional int32            challenge_times      = 11; //剩余挑战好友次数
+        repeated pbMugenChallenge challenge_list       = 12; //挑战中的好友
+        optional int32            send_lucky_coin      = 13; //投放的幸运币次数
+        optional int32            use_lucky_coin       = 14; //使用幸运币的次数
+        optional int32            max_pass_times       = 15; //爬塔对高纪录
+        optional int32            skip_mugen_flag      = 16; //通天塔跳关标志
+        optional int32            cur_hp               = 17; //当前血量百分比
+        optional int32            buy_times            = 18; //购买过的次数
+        optional int32            ability              = 19; // 战斗力
+}
+
+message pbMugenChallenge{
+        optional int64            player_id            = 1;  //好友id
+        optional int32            level                = 2;  //挑战的层数
+}
+
+message pbChallengeDungeonRank{
+        repeated pbChallengeDungeonInfo rank_list      = 1; // 排行榜列表
+        optional int32                  self           = 2; // 自己的排名
+}
+
+message pbChallengeDungeonInfo{
+        optional int64            id                   = 1; //玩家id  
+        optional string           name                 = 2; //名字
+        optional int32            lv                   = 3; //等级
+        optional int32            career               = 4; //职业
+        optional int32            have_pass_times      = 5; //通关关数
+        optional int32            score                = 6; //总分数
+        optional int32            rank                 = 7; //名次
+        optional int32            battle_ability       = 8; //战斗力
+}
+
+message pbDungeonSchedule{
+        optional int32            dungeon_id           = 1; //%%base_dungeon_area的dungeon_id 表示一系列副本(包括几个难度的)
+        optional int32            last_dungeon         = 2; //副本进度
+        optional int32            state                = 3; //副本是否通关标志
+        repeated pbDungeonTarget  target_info          = 4; //副本目标奖励信息
+}
+
+message pbDungeonTarget{
+        optional int32 dungeon_id = 1;
+        repeated int32 target_list = 2;
+        optional int32 dungeon_level = 3;  //副本难度 3代表王者副本
+        optional int32 left_times = 4;     //剩余挑战次数
+        optional int32 buy_times = 5;      //今天购买次数
+        optional int32 best_grade = 6;    //最高评级
+        optional int32 done = 7;          //已经通关的次数
+}
+
+message pbDungeonScheduleList{
+        repeated pbDungeonSchedule update_list         = 1;
+}
+
+message pbDailyDungeon{
+        optional pbDungeon              dungeon               = 1; //副本
+        optional pbDungeonCondition     condition             = 2; //通关条件
+        optional int32                  pass_flag             = 3; //是否达到通关条件
+        optional int32                  left_times            = 4; //剩余次数
+}
+
+message pbSourceDungeon{
+        repeated pbSourceDungeonInfo    info            = 1; 
+}
+
+message pbSourceDungeonInfo{
+        optional int32            type                  = 1;
+        optional int32            left_times            = 2;
+}
+
+message pbDungeonCondition{
+        optional int32            time                  = 1;  //通关时间
+        optional int32            damage                = 2;  //伤害比例
+        optional int32            hurt                  = 3;  //受创次数
+        optional int32            combo                 = 4;  //连击数
+        optional int32            aircombo              = 5;  //空中连击数
+        optional int32            skillcancel          = 6;  //技能取消次数
+        optional int32            crit                  = 7;  //暴击次数
+}
+
+message pbWinRate{
+        optional int32 win_times = 1; //胜利场数
+        optional int32 fail_times = 2; //失败场数
+        optional int32 win_rate = 3; //胜率
+}
+//扫荡结构
+message pbMopUpList{
+        optional int32 dungeon_id = 1; //副本id
+        optional int32 times = 2; //扫荡次数
+        optional int32 flip_pay_card = 3;
+        repeated pbMopUp mop_up_info = 4;
+}
+message pbMopUp{
+        repeated pbDungeonReward normal_reward = 1; //通关奖励
+        repeated pbDungeonReward boss_reward = 2;  //boss奖励
+        repeated pbDungeonReward free_card_reward = 3; //免费翻牌奖励
+        repeated pbDungeonReward pay_card_reward = 4; //付费翻牌奖励
+}
+// 协议号：12001 
+// 进入副本
+// c >> s
+//       message pbDungeon{
+//           id                        // ID
+//           type                      // 副本类型
+//       }
+// s << c
+//       pbDungeon{
+//           id                       // 副本id
+//           type                     // 副本类型
+//           dungeon_info             // 副本详细
+//       }
+
+// 协议号：12002 
+// 领取通关奖励
+// c >> s
+//       message pbDungeon{
+//           id                        // ID
+//           sub_route                 // 路线
+//           score                     // 分数
+//           reward                   // 需要领取那些奖励
+//           state                     //角色死亡状态
+//       }
+// s << c
+//       null
+
+// 协议号：12004 
+// 极限格斗大赛领奖
+// c >> s
+//      pbChallengeDungeon{
+//                 dungeon_id           = 1; //副本id
+//                 type                 = 2; //副本类型
+//                 reward               = 3; //客户端发过来的奖励
+//                 score                = 4; //副本的分数
+//                 state                = 5; //是否通关标志
+//                 sub_route            = 6; //路径
+//        }
+//  s >> c
+//      12020
+
+// 协议号：12007 
+// 公平竞技领奖
+// c >> s
+//      pbChallengeDungeon{
+//                 dungeon_id           = 1; //副本id
+//                 type                 = 2; //副本类型
+//                 reward               = 3; //客户端发过来的奖励
+//                 score                = 4; //副本的分数
+//                 state                = 5; //是否通关标志
+//                 sub_route            = 6; //路径
+//        }
+//  s >> c
+//      12030
+
+// 协议号：12005 
+// 查询极限副本排行榜信息
+// c >> s
+//       null
+// s << c
+//       pbChallengeDungeonRank
+
+// 协议号：12006 
+// 查询超级副本排行榜信息
+// c >> s
+//       null
+// s << c
+//       pbChallengeDungeonRank
+
+// 协议号：12008
+// 日常副本领奖
+// c >> s
+//       message pbDailyDungeon{
+//        optional pbDungeon              dungeon               = 1; //副本
+//        optional int32                  pass_flag             = 3; //是否达到通关条件
+//        }
+// s << c
+//       12050
+
+// 协议号：12010
+// 副本翻牌
+// c >> s
+//      pbFlipCard{
+//          dungeon_id,             //副本id
+//          card_type,              //翻牌类型
+//          pos                     //翻牌类型
+//       }
+// s << c
+//      pbFlipCard{
+//          dungeon_id,             //副本id
+//          card_type,              //翻牌类型
+//          pos,                     //翻牌类型
+//          reward                  // 奖励
+//       }
+
+// 协议号：12020
+// 极限格斗大赛请求数据
+// c >> s
+//      null                      //空包
+//        
+//  s >> c
+//      pbChallengeDungeon{
+//        optional int32            dungeon_id           = 1; //副本id
+//        optional int32            next_dungeon_id      = 2; //下一关的id
+//        optional int32            type                 = 3; //副本类型
+//        optional int32            score                = 4; //副本的分数
+//        optional int32            left_times           = 5; //剩余挑战次数
+//        optional int32            have_pass_times      = 6; //当前已通多少关
+//        }
+
+// 协议号：12021
+// 爬塔跳关
+// c >> s
+//      optional int32{id = }   1或者2    2种跳关类型
+//        
+//  s >> c
+//        12020
+
+// 协议号：12030
+// 超激斗的登陆数据
+// c >> s
+//       null
+//  s >> c
+//      pbChallengeDungeon{
+//        optional int32            dungeon_id           = 1; //副本id
+//        optional int32            next_dungeon_id      = 2; //下一关的id
+//        optional int32            type                 = 3; //副本类型
+//        optional int32            score                = 4; //副本的分数
+//        optional int32            left_times           = 5; //剩余挑战次数
+//        optional int32            have_pass_times      = 6; //当前已通多少关
+//        }
+
+// 协议号：12031
+// 公平竞技重新挑战
+// c >> s
+//       null
+//  s >> c
+//      12030
+
+// 协议号：12032
+// 公平竞技购买次数
+// c >> s
+//       null
+//  s >> c
+//      12030
+
+// 协议号：12040
+// 副本进度请求
+// c >> s
+//      #pbid32r
+//  s >> c
+//     message pbDungeonSchedule{
+//        repeated pbDungeonTarget  target_info          = 4; //副本目标奖励信息
+//       }
+
+// 协议号：12041
+// 主线本胜率查询
+// c >> s
+//      null
+//  s >> c
+//     pbWinRate
+
+// 协议号：12042
+// 购买王者副本的次数
+// c >> s
+//      #pbid32{id}
+//  s >> c
+//     12040
+
+// 协议号：12043
+// 扫荡
+// c >> s
+//      pbMopUpList{} id 次数 翻卡
+//  s >> c
+//     pbMopUpList
+
+// 协议号：12050
+// 日常副本登陆数据
+// c >> s
+//      null
+//  s >> c
+//      pbDailyDungeon
+
+// 协议号：12060
+// 日常资源副本登陆数据
+// c >> s
+//      null
+//  s >> c
+//      pbDailyDungeon
+
+// 协议号：12200
+// 获取符合条件军团副本成员
+// c >> s
+//      pbid32{id = TaskId}
+//  s >> c
+//      40003
+
+

@@ -1,0 +1,34 @@
+package pb_9;
+import "pb_common.proto";
+
+//null
+message pbnull {
+	optional int32 id = 1;
+}
+
+//============9001错误返回==============
+//协议号：9001
+// c >> s:
+//       null
+// s >> c:
+message pbError{
+        optional int32   error_code = 1;
+        repeated string  args       = 2;
+}
+
+// =========== 获得物品的提示信息 ============
+// 协议号：9002
+// c >> s:
+//     无
+// s >> c:
+message pbNewItemInfo {
+        optional int32 base_id = 1;
+}
+
+// =========== 获取当前服务器的时间戳 ===========
+// 协议号：9003
+// c >> s:
+//    无
+// s >> c:
+//    pbId32
+
